@@ -24,4 +24,12 @@
 #define RED "\e[31m"
 #define GREEN "\e[32m"
 
+enum	e_status
+{
+    THINKING
+    HUNGRY
+    EATING
+    SLEEPING
+}
+
 #endif
