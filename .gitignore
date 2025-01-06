@@ -7,7 +7,7 @@
 ./build/
 */.build
 
-philo/philo
+philo/philo/
 */*.a
 */*.swp
 */*.swo
