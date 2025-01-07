@@ -15,6 +15,7 @@
 
 # include <unistd.h>
 # include <stdio.h>
+# include <stdlib.h>
 # include <pthread.h>
 
 /* Colors for formatting output */
@@ -26,10 +27,10 @@
 
 enum	e_status
 {
-    THINKING
-    HUNGRY
-    EATING
-    SLEEPING
-}
+	THINKING,
+	HUNGRY, // waiting for fork ?
+	EATING,
+	SLEEPING
+};
 
 #endif
