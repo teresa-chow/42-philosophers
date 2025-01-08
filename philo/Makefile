@@ -53,14 +53,14 @@ MKDIR	= mkdir -p
 all: $(NAME)	## Compile philo
 
 $(NAME): $(BUILD_DIR) $(OBJS)
-	@printf "$(GRN)>> Generated object files$(RES)\n\n"
+	@printf "$(GRN)>> Generated object files$(NC)\n\n"
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
-	@printf "$(GRN)>> Compiled philo$(RES)\n\n"
+	@printf "$(GRN)>> Compiled philo$(NC)\n\n"
 
 
 $(BUILD_DIR):
 	$(MKDIR) $(BUILD_DIR)
-	@printf "$(GRN)>> Created .build/ directory for object files$(RES)\n\n"
+	@printf "$(GRN)>> Created .build/ directory for object files$(NC)\n\n"
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -70,11 +70,11 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 
 clean:	## Remove object files
 	$(RM) $(BUILD_DIR)
-	@printf "$(GRN)>> Removed object files$(RES)\n\n"
+	@printf "$(GRN)>> Removed object files$(NC)\n\n"
 
 fclean: clean	## Remove executable files
 	$(RM) $(NAME)
-	@printf "$(GRN)>> Removed executable files$(RES)\n\n"
+	@printf "$(GRN)>> Removed executable files$(NC)\n\n"
 
 re: fclean all	## Purge and recompile
 
@@ -106,11 +106,11 @@ install: ## Install norminette and valgrind
 help:	## Display this help info
 	@awk 'BEGIN { \
 		FS = ":.*##"; \
-		printf "\n$(WHI_B)USAGE$(RES)\n\t$(YEL)make$(RES)$(CYA)\t \
-		<target>$(RES)\n"} \
+		printf "\n$(WHI_B)USAGE$(NC)\n\t$(YEL)make$(NC)$(CYA)\t \
+		<target>$(NC)\n"} \
 		/^[a-zA-Z_0-9-]+:.*?##/ { \
-		printf "\t$(CYA_B)%-15s$(RES) %s\n", $$1, $$2 } \
-		/^##@/ { printf "\n$(WHI_B)%s$(RES)\n", \
+		printf "\t$(CYA_B)%-15s$(NC) %s\n", $$1, $$2 } \
+		/^##@/ { printf "\n$(WHI_B)%s$(NC)\n", \
 		substr($$0, 5) } ' Makefile
 	@printf "\n"
 
@@ -122,7 +122,7 @@ help:	## Display this help info
 # ============================================================================ #
 
 # Reset to default
-RES = \033[0m
+NC = \033[0m
 
 # Regular text colors
 RED = \033[0;31m

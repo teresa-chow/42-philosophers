@@ -20,17 +20,25 @@
 
 /* Colors for formatting output */
 #define NC "\e[0m"
-#define YELLOW "\e[33m"
-#define BYELLOW "\e[1;33m"
+#define YEL "\e[33m"
+#define YEL_B "\e[1;33m"
 #define RED "\e[31m"
-#define GREEN "\e[32m"
+#define GRN "\e[32m"
 
-enum	e_status
+typedef struct s_info
+{
+	int	n_philo;
+	int	time_to_die;
+	int	time_to_eat;
+	int	time_to_sleep;
+}	t_info;
+
+enum	e_state
 {
 	THINKING,
-	HUNGRY, // waiting for fork ?
 	EATING,
-	SLEEPING
+	SLEEPING,
+	DEAD
 };
 
 #endif
