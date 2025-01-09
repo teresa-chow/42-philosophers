@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <limits.h>
 # include <pthread.h>
 
 /* Colors for formatting output */
@@ -27,10 +28,10 @@
 
 typedef struct s_info
 {
-	int	n_philo;
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
+	unsigned int	n_philo;
+	unsigned int	time_to_die;
+	unsigned int	time_to_eat;
+	unsigned int	time_to_sleep;
 }	t_info;
 
 enum	e_state
@@ -38,7 +39,10 @@ enum	e_state
 	THINKING,
 	EATING,
 	SLEEPING,
-	DEAD
+	STARVED
 };
+
+int check_input(int argc, char **argv, t_info *info);
+void	print_usage(void);
 
 #endif
