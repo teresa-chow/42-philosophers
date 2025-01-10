@@ -41,10 +41,6 @@ int	main(int argc, char **argv)
 	if (pthread_join(t2, NULL) != 0)
 		return (4);
 	pthread_mutex_destroy(&mutex);
-	/*argv[1]int number_of_philosophers
-	argv[2]int time_to_die
-	argv[3]int time_to_eat
-	argc[4]int time_to_sleep*/
 	return (0);
 }
 /*

@@ -17,14 +17,9 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <limits.h>
+# include <stdbool.h>
+# include <string.h>
 # include <pthread.h>
-
-/* Colors for formatting output */
-#define NC "\e[0m"
-#define YEL "\e[33m"
-#define YEL_B "\e[1;33m"
-#define RED "\e[31m"
-#define GRN "\e[32m"
 
 typedef struct s_info
 {
@@ -42,12 +37,32 @@ enum	e_state
 	STARVED
 };
 
-/* ======================= PARSING & ERROR HANDLING ========================= */
+typedef struct s_philo
+{
+	pthread_t	*thread_id;
+	bool	fork_left;
+	bool	fork_right;
+	enum e_state	state;
+}	t_philo;
+
+typedef struct s_sim
+{
+	bool	active;
+	t_philo	*philo;
+	pthread_mutex_t	*forks;
+}	t_sim;
+
+
+/* ======================= PARSING & ERROR HANDLING ======================== */
 int check_input(int argc, char **argv, t_info *info);
 // Additional error messages
 int	print_above_limit(void);
 int	print_philo_zero(void);
 void	print_usage(void);
 
-/* =======================  ========================= */
+void	init_simulation(t_info info, t_sim *simulation); //review return value
+
+/* =========================== MEMORY HANDLING ============================= */
+//void	free_philo_array(t_philo **philo);
+
 #endif

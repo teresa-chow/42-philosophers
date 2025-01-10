@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   mem_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tchow-so <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: tchow-so  <tchow-so@student.42porto.>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/06 15:08:47 by tchow-so          #+#    #+#             */
-/*   Updated: 2025/01/06 15:09:43 by tchow-so         ###   ########.fr       */
+/*   Created: 2025/01/10 10:46:38 by tchow-so          #+#    #+#             */
+/*   Updated: 2025/01/10 10:46:38 by tchow-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
 
-int	main(int argc, char **argv)
+void	free_philo_array(t_philo **philo) //free: invalid pointer
 {
-	t_info	info;
-	t_sim	simulation;
-	//t_philo	philo;
-	//pthread_mutex_t	forks;
+	int	i;
 
-	if (!check_input(argc, argv, &info))
-		return (1);
-	init_simulation(info, &simulation);
-	//free memory
-	return (0);
+	i = 0;
+	while (philo[i])
+	{
+		free(philo[i]->thread_id);
+		free(philo[i]);
+		i++;
+	}
+	free(philo);
+	return ;
 }
