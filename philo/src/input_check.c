@@ -15,6 +15,7 @@
 static int	check_argc(int argc);
 static int	check_isnum(int argc, char **argv);
 static int	check_limits(int argc, char **argv, t_info *info);
+static void	set_info(int i, unsigned int res, t_info *info);
 
 int check_input(int argc, char **argv, t_info *info)
 {
@@ -69,28 +70,33 @@ static int	check_limits(int argc, char **argv, t_info *info)
 	int j;
 
 	i = 1;
-	j = 0;
-	while (i < argc && argv[i])
+	while (i < argc)
 	{
 		res = 0;
+		j = 0;
 		while (argv[i][j])
 		{
 			res = res * 10 + (argv[i][j] - '0');
 			if (res > UINT_MAX)
-			{
-				write(2, "Invalid argument(s): value(s) above limit\n", 42);
-				return (0);
-			}
+				return (print_above_limit());
 			j++;
 		}
 		if (i == 1 && res == 0)
-		{
-			write(2, "Insufficient number of philosophers to run "
-			"a simulation\n", 56);
-			return (0);
-		}
-		set_info(info);
+			return (print_philo_zero());
+		set_info(i, (unsigned int)res, info);
 		i++;
 	}
 	return (1);
+}
+
+static void	set_info(int i, unsigned int res, t_info *info)
+{
+	if (i == 1)
+		info->n_philo = res;
+	else if (i == 2)
+		info->time_to_die = res;
+	else if (i == 3)
+		info->time_to_eat = res;
+	else if (i == 4)
+		info->time_to_sleep = res;
 }

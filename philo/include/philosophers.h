@@ -42,7 +42,12 @@ enum	e_state
 	STARVED
 };
 
+/* ======================= PARSING & ERROR HANDLING ========================= */
 int check_input(int argc, char **argv, t_info *info);
+// Additional error messages
+int	print_above_limit(void);
+int	print_philo_zero(void);
 void	print_usage(void);
 
+/* =======================  ========================= */
 #endif

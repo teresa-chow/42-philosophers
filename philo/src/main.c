@@ -25,14 +25,13 @@
 
 int	main(int argc, char **argv)
 {
-	//int	i;
 	t_info	info;
+	//int	i;
 	//pthread_t	*philo;
 	//pthread_mutex_t	*forks;
 
 	if (!check_input(argc, argv, &info))
 		return (1);
-	printf("Input OK\n");
 		/*i = 0;
 		while (i < info.n_philo)
 		{
