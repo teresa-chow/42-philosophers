@@ -12,14 +12,28 @@
 
 #include "../include/philosophers.h"
 
-void	free_philo_array(t_philo **philo) //free: invalid pointer
+void	free_forks_array(t_info info, pthread_mutex_t **forks)
 {
-	int	i;
+	unsigned int	i;
 
 	i = 0;
-	while (philo[i])
+	while (i < info.n_philo)
 	{
-		free(philo[i]->thread_id);
+		pthread_mutex_destroy(forks[i]);
+		i++;
+	}
+	free(forks);
+	return ;
+}
+
+void	free_philo_array(t_info info, t_philo **philo)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (i < info.n_philo)
+	{
+		free(philo[i]->thread);
 		free(philo[i]);
 		i++;
 	}

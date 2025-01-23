@@ -14,14 +14,12 @@
 
 int	main(int argc, char **argv)
 {
-	t_info	info;
-	t_sim	simulation;
-	//t_philo	philo;
-	//pthread_mutex_t	forks;
+	t_sim	sim;
 
-	if (!check_input(argc, argv, &info))
+	if (!check_input(argc, argv, &sim.info))
 		return (1);
-	init_simulation(info, &simulation);
-	//free memory
+	init_simulation(&sim);
+	free_forks_array(sim.info, &sim.forks);
+    free_philo_array(sim.info, &sim.philo);
 	return (0);
 }
