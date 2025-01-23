@@ -22,15 +22,28 @@
 # include <sys/time.h>
 # include <pthread.h>
 
+// Max thread & time caps
+# define MAX_PHILO 50
+# define MAX_DIE 10000000 /* 10 sec */
+# define MAX_EAT 1000000 /* 1 sec */
+# define MAX_SLEEP 1000000 /* 1 sec */
+
 // Printf formatting
-#define NC "\033[0m"
+# define NC "\033[0m"
 // Regular
-#define RED "\033[0;31m"
-#define GRN "\033[0;32m"
-#define YEL "\033[0;33m"
-#define BLU "\033[0;34m"
-#define CYA "\033[0;36m"
-#define WHI "\033[0;37m"
+# define RED "\033[0;31m"
+# define GRN "\033[0;32m"
+# define YEL "\033[0;33m"
+# define BLU "\033[0;34m"
+# define CYA "\033[0;36m"
+# define WHI "\033[0;37m"
+
+/*enum	e_error
+{
+	SUCCESS = 0,
+	NO_MEMORY = 1,
+	SIM_FAILED = 2
+};*/
 
 enum	e_state
 {
@@ -48,45 +61,51 @@ typedef struct s_info
 	unsigned int	time_to_sleep;
 }	t_info;
 
+typedef struct s_fork
+{
+	pthread_mutex_t		mutex;
+	bool				taken;
+}	t_fork;
+
 typedef struct s_philo
 {
-	int	index;
-	pthread_t	thread;
+	int				index;
+	pthread_t		thread;
 	struct timeval	last_meal;
 	enum e_state	state;
 }	t_philo;
 
 typedef struct s_sim
 {
-	t_info	info;
-	bool	active;
-	pthread_t	main;
-	pthread_mutex_t	counter;
-	pthread_mutex_t	pair;
+	t_info				info;
+	pthread_mutex_t		status;
+	bool				active;
+	pthread_t			main;
+	pthread_mutex_t		counter;
 	//pthread_mutex_t	print;
-	t_philo	*philo;
-	pthread_mutex_t	*forks;
-	struct timeval	start;
+	t_philo				*philo;
+	t_fork				*forks;
+	struct timeval		start;
 }	t_sim;
 
-
 /* ======================= PARSING & ERROR HANDLING ======================== */
-int check_input(int argc, char **argv, t_info *info);
+int		check_input(int argc, char **argv, t_info *info);
+void	set_info(int i, unsigned int res, t_info *info);
 // Additional error messages
-int	print_above_limit(void);
-int	print_philo_zero(void);
+int		print_above_limit(void);
+int		print_philo_zero(void);
 void	print_usage(void);
 
 /* ============================= SIMULATION ================================ */
-void	init_simulation(t_sim *simulation); //review return value
+int	init_simulation(t_sim *simulation); //review return value
 // Thread routines
 void	*main_routine(void *arg);
 void	*philo_routine(void *arg);
 // Actions
-void    act_think(int i, t_philo **philo);
-void    act_eat(t_sim **sim, t_info info, int i, t_philo **philo);
-void    act_sleep(t_info info, int i, t_philo **philo);
-void    act_die(t_sim **sim, t_info info, int i, t_philo **philo);
+//void	act_think(int i, t_philo **philo);
+//void	act_eat(t_sim **sim, t_info info, int i, t_philo **philo);
+//void	act_sleep(t_info info, int i, t_philo **philo);
+//void	act_die(t_sim **sim, t_info info, int i, t_philo **philo);
 
 /* =========================== MEMORY HANDLING ============================= */
 void	free_forks_array(t_info info, pthread_mutex_t **forks);

@@ -15,9 +15,9 @@
 static int	check_argc(int argc);
 static int	check_isnum(int argc, char **argv);
 static int	check_limits(int argc, char **argv, t_info *info);
-static void	set_info(int i, unsigned int res, t_info *info);
+static int	check_max_values(int i, unsigned long res);
 
-int check_input(int argc, char **argv, t_info *info)
+int	check_input(int argc, char **argv, t_info *info)
 {
 	if (!check_argc(argc))
 		return (0);
@@ -42,7 +42,7 @@ static int	check_argc(int argc)
 static int	check_isnum(int argc, char **argv)
 {
 	int	i;
-	int j;
+	int	j;
 
 	i = 1;
 	while (i < argc)
@@ -66,8 +66,8 @@ static int	check_isnum(int argc, char **argv)
 static int	check_limits(int argc, char **argv, t_info *info)
 {
 	unsigned long	res;
-	int	i;
-	int j;
+	int				i;
+	int				j;
 
 	i = 1;
 	while (i < argc)
@@ -83,20 +83,23 @@ static int	check_limits(int argc, char **argv, t_info *info)
 		}
 		if (i == 1 && res == 0)
 			return (print_philo_zero());
+		if (!check_max_values(i, res))
+			return (print_above_limit());
 		set_info(i, (unsigned int)res, info);
 		i++;
 	}
 	return (1);
 }
 
-static void	set_info(int i, unsigned int res, t_info *info)
+static int	check_max_values(int i, unsigned long res)
 {
-	if (i == 1)
-		info->n_philo = res;
-	else if (i == 2)
-		info->time_to_die = res;
-	else if (i == 3)
-		info->time_to_eat = res;
-	else if (i == 4)
-		info->time_to_sleep = res;
+	if (i == 1 && res > MAX_PHILO)
+		return (0);
+	else if (i == 2 && res > MAX_DIE)
+		return (0);
+	else if (i == 3 && res > MAX_EAT)
+		return (0);
+	else if (i == 4 && res > MAX_SLEEP)
+		return (0);
+	return (1);
 }

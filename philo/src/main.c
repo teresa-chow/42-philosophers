@@ -15,11 +15,15 @@
 int	main(int argc, char **argv)
 {
 	t_sim	sim;
+	int sim_error;
 
+	sim_error = 0;
 	if (!check_input(argc, argv, &sim.info))
 		return (1);
-	init_simulation(&sim);
-	free_forks_array(sim.info, &sim.forks);
-    free_philo_array(sim.info, &sim.philo);
+	sim_error = init_simulation(&sim);
+	//if (sim_error != 0)
+		//TODO: deal with simulation errors
+	//free_forks_array(sim.info, &sim.forks);
+	//free_philo_array(sim.info, &sim.philo);
 	return (0);
 }

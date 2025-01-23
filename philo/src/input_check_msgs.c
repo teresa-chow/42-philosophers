@@ -21,7 +21,7 @@ int	print_above_limit(void)
 int	print_philo_zero(void)
 {
 	write(2, "Insufficient number of philosophers to run "
-			"a simulation\n", 56);
+		"a simulation\n", 56);
 	print_usage();
 	return (0);
 }

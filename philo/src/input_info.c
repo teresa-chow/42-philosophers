@@ -1,42 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mem_utils.c                                        :+:      :+:    :+:   */
+/*   input_info.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tchow-so  <tchow-so@student.42porto.>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/10 10:46:38 by tchow-so          #+#    #+#             */
-/*   Updated: 2025/01/10 10:46:38 by tchow-so         ###   ########.fr       */
+/*   Created: 2025/01/23 11:58:10 by tchow-so          #+#    #+#             */
+/*   Updated: 2025/01/23 14:25:03 by tchow-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
 
-/*void	free_forks_array(t_info info, pthread_mutex_t **forks)
+void	set_info(int i, unsigned int res, t_info *info)
 {
-	unsigned int	i;
-
-	i = 0;
-	while (i < info.n_philo)
-	{
-		pthread_mutex_destroy(forks[i]);
-		i++;
-	}
-	free(forks);
-	return ;
+	if (i == 1)
+		info->n_philo = res;
+	else if (i == 2)
+		info->time_to_die = res;
+	else if (i == 3)
+		info->time_to_eat = res;
+	else if (i == 4)
+		info->time_to_sleep = res;
 }
-
-void	free_philo_array(t_info info, t_philo **philo)
-{
-	unsigned int	i;
-
-	i = 0;
-	while (i < info.n_philo)
-	{
-		free(philo[i]->thread);
-		free(philo[i]);
-		i++;
-	}
-	free(philo);
-	return ;
-}*/

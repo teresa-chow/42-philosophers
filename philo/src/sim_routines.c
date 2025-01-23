@@ -15,55 +15,76 @@
 //static void even_routine(t_sim **sim, int i);
 //static void odd_routine(t_sim **sim, int i);
 
-void	*main_routine(void *arg) //REDO: act_die is also setting active to 0
+/*void	*main_routine(void *arg) //REDO: act_die is also setting active to 0
 {
-    t_sim *sim;
+	t_sim	*sim;
 
-    sim = (t_sim *)arg;
-    while (1)
-    {
-        if (sim->active == 0)
-        {
-            printf("---------------------\n"); //delete
-            break ;
-        }
-    }
+	sim = (t_sim *)arg;
+	while (1)
+	{
+		if (sim->active == 0)
+		{
+			printf("---------------------\n"); //delete
+			break ;
+		}
+	}
 	return (NULL);
-}
+}*/
 
 void	*philo_routine(void *arg)
 {
-    struct timeval  now;
-    static int	i = -1;
-    t_sim	*sim;
-	
+	//struct timeval				now;
+	static int					i = -1;
+	t_sim						*sim;
+
 	sim = (t_sim *)arg;
+	if (sim->active == 0)
+		pthread_mutex_lock(&sim->status);
+	else if (sim->active == 1)
+		pthread_mutex_unlock(&sim->status);
+    pthread_mutex_lock(&sim->status);
     while (1)
     {
-        if (sim->active == 1)
-        {
-            pthread_mutex_lock(&sim->counter);
-            i++;
-            pthread_mutex_unlock(&sim->counter);
-            pthread_mutex_lock(&sim->pair);
-            pthread_mutex_lock(&sim->forks[i]);
-            gettimeofday(&now, NULL);
-            printf(WHI "%d\t\t%d\t" NC YEL "has taken a fork\n" NC, now.tv_usec, i);
-            pthread_mutex_lock(&sim->forks[i + 1]);
-            pthread_mutex_unlock(&sim->pair);
-            gettimeofday(&now, NULL);
-            printf(WHI "%d\t\t%d\t" NC YEL "has taken a fork\n" NC, now.tv_usec, i);
-            act_eat(sim->info, i, &sim->philo);
-            pthread_mutex_unlock(&sim->forks[i]);
-            pthread_mutex_unlock(&sim->forks[i + 1]);
-            act_sleep(sim->info, i, &sim->philo);
-            act_think(i, &sim->philo);
-            act_die(&sim, sim->info, i, &sim->philo);
-            if (sim->active == 0)
-                break ;
-        }
+        pthread_mutex_lock(&sim->counter);
+	    i++;
+        printf("i: %d\n", i);
+	    pthread_mutex_unlock(&sim->counter);
     }
-    return (NULL);
+    pthread_mutex_unlock(&sim->status);
+			//if (i < (int)sim->info.n_philo && (sim->forks[i].taken == 0) && (sim->forks[i + 1].taken) == 0)
+			/*pthread_mutex_lock(&sim->forks[i].mutex);
+			sim->forks[i].taken = 1;
+			printf(WHI "%d\t" NC YEL "has taken a fork\n" NC, i);
+			pthread_mutex_lock(&sim->forks[i + 1].mutex);
+			sim->forks[i + 1].taken = 1;
+			printf(WHI "%d\t" NC YEL "has taken a fork\n" NC, i);
+			sim->forks[i].taken = 0;
+			pthread_mutex_unlock(&sim->forks[i].mutex);
+			sim->forks[i + 1].taken = 0;
+			pthread_mutex_unlock(&sim->forks[i + 1].mutex);*/
+			/*else if (i <= (int)sim->info.n_philo && (sim->forks[i - 1].taken) == 0 && (sim->forks[i].taken == 0))
+			{
+				pthread_mutex_lock(&sim->forks[i - 1].mutex);
+				sim->forks[i - 1].taken = 1;
+				printf(WHI "%d\t" NC YEL "has taken a fork\n" NC, i);
+				pthread_mute		while (sim->active == 1)
+		{lock(&sim->pair);
+
+			gettimeofday(&now, NULL);
+			printf(WHI "%d\t\t%d\t" NC YEL "has taken a fork\n" NC, now.tv_usec, i);
+			pthread_mutex_lock(&sim->forks[i + 1]);
+			pthread_mutex_unlock(&sim->pair);
+			gettimeofday(&now, NULL);
+			printf(WHI "%d\t\t%d\t" NC YEL "has taken a fork\n" NC, now.tv_usec, i);
+			act_eat(sim->info, i, &sim->philo);
+			pthread_mutex_unlock(&sim->forks[i]);
+			pthread_mutex_unlock(&sim->forks[i + 1]);
+			act_sleep(sim->info, i, &sim->philo);
+			act_think(i, &sim->philo);
+			act_die(&sim, sim->info, i, &sim->philo);
+			if (sim->active == 0)
+				break ;*/
+	return (NULL);
 }
 
 /*static void even_routine(t_sim **sim, int i)
