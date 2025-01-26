@@ -14,23 +14,22 @@
 
 static int	create_forks(t_info info, t_fork **forks);
 static int	create_philo(t_info info, t_sim *sim, t_philo **philo);
-//static void	start_simulation(t_info info, t_sim *sim, t_philo **philo);
-//static void	init_last_meal(unsigned int n_philo, t_philo **philo,
-//				struct timeval start_time);
+static void	start_simulation(t_info info, t_sim *sim, t_philo **philo);
+static void	init_last_meal(unsigned int n_philo, t_philo **philo,
+				struct timeval start_time);
 
-/* TODO: handle errors, function return 1 on error, 0 if everything's fine */
+/* TO DO : REVIEW ERROR CODES AND MESSAGES */
 int	init_simulation(t_sim *sim)
 {
 	int	error;
 
-	error = 0; //REVIEW
+	error = 0; 
 	sim->active = 0;
-	create_forks(sim->info, &sim->forks); //define behavior after checking check error
+	pthread_create(&sim->main, NULL, &main_routine, sim);
+	create_forks(sim->info, &sim->forks);
 	pthread_mutex_init(&sim->counter, NULL);
-	pthread_mutex_init(&sim->status, NULL);
 	create_philo(sim->info, sim, &sim->philo);
-	//pthread_create(&sim->main, NULL, &main_routine, sim);
-	//pthread_join(sim->main, NULL);
+	pthread_join(sim->main, NULL);
 	return (error);
 }
 
@@ -61,32 +60,28 @@ static int	create_philo(t_info info, t_sim *sim, t_philo **philo)
 		return (1);
 	while (i < info.n_philo)
 	{
-		(*philo)[i].index = i;
 		if (pthread_create(&(*philo)[i].thread, NULL, &philo_routine, sim) != 0)
 		{
-			write(2, "Failed to create thread\n", 24); //review
+			write(2, "Failed to create thread\n", 24);
 			return (2);
 		}
-		//pthread_detach((*philo)[i].thread);
+		pthread_detach((*philo)[i].thread);
 		i++;
 	}
-	sim->active = 1;
-	//start_simulation(info, sim, philo);
+	start_simulation(info, sim, philo);
 	return (0);
 }
 
-/*static void	start_simulation(t_info info, t_sim *sim, t_philo **philo)
+static void	start_simulation(t_info info, t_sim *sim, t_philo **philo)
 {
-	(void)info;
-	(void)philo;
 	sim->active = 1;
 	memset(&sim->start, 0, sizeof(struct timeval));
 	gettimeofday(&sim->start, NULL);
-//	init_last_meal(info.n_philo, philo, sim->start);
+	init_last_meal(info.n_philo, philo, sim->start);
 	return ;
-}*/
+}
 
-/*static void	init_last_meal(unsigned int n_philo, t_philo **philo,
+static void	init_last_meal(unsigned int n_philo, t_philo **philo,
 	struct timeval start_time)
 {
 	unsigned int	i;
@@ -95,4 +90,4 @@ static int	create_philo(t_info info, t_sim *sim, t_philo **philo)
 	while (i < n_philo)
 		(*philo)[i].last_meal = start_time;
 	return ;
-}*/
+}

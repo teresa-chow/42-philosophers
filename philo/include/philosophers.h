@@ -69,8 +69,8 @@ typedef struct s_fork
 
 typedef struct s_philo
 {
-	int				index;
 	pthread_t		thread;
+	bool	forks_available;
 	struct timeval	last_meal;
 	enum e_state	state;
 }	t_philo;
@@ -78,14 +78,13 @@ typedef struct s_philo
 typedef struct s_sim
 {
 	t_info				info;
-	pthread_mutex_t		status;
+
 	bool				active;
 	pthread_t			main;
-	pthread_mutex_t		counter;
-	//pthread_mutex_t	print;
-	t_philo				*philo;
 	t_fork				*forks;
+	t_philo				*philo;
 	struct timeval		start;
+	pthread_mutex_t		counter;
 }	t_sim;
 
 /* ======================= PARSING & ERROR HANDLING ======================== */

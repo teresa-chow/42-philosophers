@@ -12,24 +12,28 @@
 
 #include "../include/philosophers.h"
 
-//static void even_routine(t_sim **sim, int i);
-//static void odd_routine(t_sim **sim, int i);
-
-/*void	*main_routine(void *arg) //REDO: act_die is also setting active to 0
+void	*main_routine(void *arg)
 {
 	t_sim	*sim;
+	unsigned int i;
 
 	sim = (t_sim *)arg;
-	while (1)
+	while (sim->active == 0)
 	{
-		if (sim->active == 0)
-		{
-			printf("---------------------\n"); //delete
+		if (sim->active == 1)
 			break ;
-		}
+    }
+	i = 0;
+	while (sim->active == 1)
+	{
+        if (i == sim->info.n_philo)
+            i = 0;
+		if (sim->philo[i].state == STARVED)
+			break ;
+        i++;
 	}
 	return (NULL);
-}*/
+}
 
 void	*philo_routine(void *arg)
 {
@@ -38,19 +42,24 @@ void	*philo_routine(void *arg)
 	t_sim						*sim;
 
 	sim = (t_sim *)arg;
-	if (sim->active == 0)
-		pthread_mutex_lock(&sim->status);
-	else if (sim->active == 1)
-		pthread_mutex_unlock(&sim->status);
-    pthread_mutex_lock(&sim->status);
-    while (1)
-    {
-        pthread_mutex_lock(&sim->counter);
-	    i++;
-        printf("i: %d\n", i);
-	    pthread_mutex_unlock(&sim->counter);
-    }
-    pthread_mutex_unlock(&sim->status);
+	while (sim->active == 0)
+	{
+		if (sim->active == 1)
+			break ;
+	}
+	pthread_mutex_lock(&sim->counter);
+	i++;
+    i++;
+	printf("i: %d\n", i);
+	pthread_mutex_unlock(&sim->counter);
+    //think
+    //check_forks ()
+    //eat
+    //sleep
+    //starved
+	return (NULL);
+}
+
 			//if (i < (int)sim->info.n_philo && (sim->forks[i].taken == 0) && (sim->forks[i + 1].taken) == 0)
 			/*pthread_mutex_lock(&sim->forks[i].mutex);
 			sim->forks[i].taken = 1;
@@ -84,8 +93,6 @@ void	*philo_routine(void *arg)
 			act_die(&sim, sim->info, i, &sim->philo);
 			if (sim->active == 0)
 				break ;*/
-	return (NULL);
-}
 
 /*static void even_routine(t_sim **sim, int i)
 {
