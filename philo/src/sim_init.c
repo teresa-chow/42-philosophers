@@ -19,18 +19,17 @@ static void	init_last_meal(unsigned int n_philo, t_philo **philo,
 				struct timeval start_time);
 
 /* TO DO : REVIEW ERROR CODES AND MESSAGES */
-int	init_simulation(t_sim *sim)
+void	init_simulation(t_sim *sim)
 {
-	int	error;
+	t_philo	*philo;
 
-	error = 0; 
 	sim->active = 0;
 	pthread_create(&sim->main, NULL, &main_routine, sim);
 	create_forks(sim->info, &sim->forks);
-	pthread_mutex_init(&sim->counter, NULL);
-	create_philo(sim->info, sim, &sim->philo);
+//	pthread_mutex_init(&sim->check, NULL);
+	create_philo(sim->info, sim, &philo);
 	pthread_join(sim->main, NULL);
-	return (error);
+	return ;
 }
 
 static int	create_forks(t_info info, t_fork **forks)
@@ -60,7 +59,10 @@ static int	create_philo(t_info info, t_sim *sim, t_philo **philo)
 		return (1);
 	while (i < info.n_philo)
 	{
-		if (pthread_create(&(*philo)[i].thread, NULL, &philo_routine, sim) != 0)
+		(*philo)[i].state = NONE;
+		(*philo)[i].index = i;
+		(*philo)[i].sim = sim;
+		if (pthread_create(&(*philo)[i].thread, NULL, &philo_routine, &(*philo)[i]) != 0)
 		{
 			write(2, "Failed to create thread\n", 24);
 			return (2);

@@ -22,11 +22,10 @@ void	act_think(int i, t_philo **philo)
 }
 
 /* TODO: acquire and release forks check */
-void	act_eat(t_sim **sim, t_info info, int i, t_philo **philo)
+void	act_eat(t_info info, int i, t_philo **philo)
 {
 	struct timeval	now;
 
-	(void)sim; //delete
 	(*philo)[i].state = EATING;
 	gettimeofday(&now, NULL);
 	printf(WHI "%d\t\t%d\t" NC GRN "is eating\n" NC, now.tv_usec, i);
@@ -34,25 +33,11 @@ void	act_eat(t_sim **sim, t_info info, int i, t_philo **philo)
 	gettimeofday(&(*philo)[i].last_meal, NULL);
 }
 
-/*void    act_eat(int i, t_sim *sim)
-{
-    thread_mutex_t act;
-    struct timeval  now;
-    
-    acquire_forks
-    acquire own (same index)
-    acquire other
-    eat – print msg X is eating
-    gettimeofday(&now, NULL);
-    printf("%ld\t%i is eating", now.tv_usec, i);
-    //(time since) last_meal
-}*/
-
 void	act_sleep(t_info info, int i, t_philo **philo)
 {
 	struct timeval	now;
 
-	(*philo)[i].state = THINKING;
+	(*philo)[i].state = SLEEPING;
 	gettimeofday(&now, NULL);
 	printf(WHI "%d\t\t%d\t" NC BLU "is sleeping\n" NC, now.tv_usec, i);
 	usleep(info.time_to_sleep);

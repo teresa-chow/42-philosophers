@@ -47,6 +47,7 @@
 
 enum	e_state
 {
+	NONE,
 	THINKING,
 	EATING,
 	SLEEPING,
@@ -69,22 +70,25 @@ typedef struct s_fork
 
 typedef struct s_philo
 {
+	unsigned int	index;
 	pthread_t		thread;
-	bool	forks_available;
 	struct timeval	last_meal;
 	enum e_state	state;
+	t_fork	*fork1;
+	t_fork	*fork2;
+	struct s_sim	*sim;
 }	t_philo;
 
 typedef struct s_sim
 {
 	t_info				info;
-
 	bool				active;
 	pthread_t			main;
 	t_fork				*forks;
-	t_philo				*philo;
+//	t_philo				*philo;
 	struct timeval		start;
-	pthread_mutex_t		counter;
+//	pthread_mutex_t		counter;
+	pthread_mutex_t		check;
 }	t_sim;
 
 /* ======================= PARSING & ERROR HANDLING ======================== */
@@ -96,15 +100,18 @@ int		print_philo_zero(void);
 void	print_usage(void);
 
 /* ============================= SIMULATION ================================ */
-int	init_simulation(t_sim *simulation); //review return value
+void	init_simulation(t_sim *simulation); //review return value
 // Thread routines
 void	*main_routine(void *arg);
 void	*philo_routine(void *arg);
 // Actions
-//void	act_think(int i, t_philo **philo);
-//void	act_eat(t_sim **sim, t_info info, int i, t_philo **philo);
-//void	act_sleep(t_info info, int i, t_philo **philo);
-//void	act_die(t_sim **sim, t_info info, int i, t_philo **philo);
+int	check_forks(int i, t_sim *sim);
+void    acquire_forks(t_philo *philo);
+void    release_forks(t_philo *philo);
+void	act_think(int i, t_philo **philo);
+void	act_eat(t_info info, int i, t_philo **philo);
+void	act_sleep(t_info info, int i, t_philo **philo);
+void	act_die(t_sim **sim, t_info info, int i, t_philo **philo);
 
 /* =========================== MEMORY HANDLING ============================= */
 void	free_forks_array(t_info info, pthread_mutex_t **forks);
