@@ -1,34 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mem_utils.c                                        :+:      :+:    :+:   */
+/*   err_input.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tchow-so  <tchow-so@student.42porto.>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/10 10:46:38 by tchow-so          #+#    #+#             */
-/*   Updated: 2025/01/10 10:46:38 by tchow-so         ###   ########.fr       */
+/*   Created: 2025/01/09 17:51:23 by tchow-so          #+#    #+#             */
+/*   Updated: 2025/01/27 09:39:51 by tchow-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
 
-void	free_forks_array(t_sim *sim)
+int	print_above_limit(void)
 {
-	unsigned int	i;
-
-	i = 0;
-	while (i < sim->info.n_philo)
-	{
-		pthread_mutex_destroy(&sim->forks[i].mutex);
-		i++;
-	}
-	free(sim->forks);
-	return ;
+	write(2, "Invalid argument(s): value(s) above limit\n", 42);
+	return (0);
 }
 
-void	free_philo_array(t_philo **philo)
+int	print_philo_zero(void)
 {
-	if (philo)
-		free(*philo);
-	return ;
+	write(2, "Insufficient number of philosophers to run "
+		"a simulation\n", 56);
+	print_usage();
+	return (0);
+}
+
+void	print_usage(void)
+{
+	write(1, "Usage: ./philo <number_of_philosophers> <time_to_die> "
+		"<time_to_eat> <time_to_sleep>\n", 84);
 }

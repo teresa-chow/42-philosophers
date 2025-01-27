@@ -15,61 +15,51 @@
 void	*main_routine(void *arg)
 {
 	t_sim	*sim;
-	unsigned int i;
 
 	sim = (t_sim *)arg;
 	while (sim->active == 0)
 	{
 		if (sim->active == 1)
 			break ;
-    }
-	i = 0;
+	}
 	while (sim->active == 1)
 	{
 		if (sim->active == 0)
-			return (NULL);
+			end_simulation(&(*sim));
 	}
 	return (NULL);
 }
 
-void	*philo_routine(void *arg)
+void	*philo_routine(void *arg) // TOO MANY LINES
 {
-    t_philo *philo;
-    int check;
+	t_philo	*philo;
+	int	check;
 
 	philo = (t_philo *)arg;
-    check = 0;
+	check = 0;
 	while (philo->sim->active == 0)
 	{
 		if (philo->sim->active == 1)
 			break ;
 	}
-    while (philo->sim->active == 1)
-    {
-        if (philo->sim->active == 0)
-            return (NULL);
-        check = check_forks(philo->index, philo->sim);
-        if (check)
-        {
-            acquire_forks(philo);
-            act_eat(philo->sim->info, philo->index, &philo);
-            release_forks(philo);
-        }
-        if (philo->sim->active == 0)
-            return (NULL);
-        if ((philo[philo->index].state == NONE)
-            || (philo[philo->index].state == EATING))
-            act_sleep(philo->sim->info, philo->index, &philo);
-        if (philo->sim->active == 0)
-            return (NULL);
-        if ((philo[philo->index].state == NONE)
-            || (philo[philo->index].state == SLEEPING))
-            act_think(philo->index, &philo);
-        if (philo->sim->active == 0)
-            return (NULL);
-        act_die(&philo->sim, philo->sim->info, philo->index, &philo);
-        if (philo->sim->active == 0)
-            return (NULL);
-    }
+	while (philo->sim->active == 1)
+	{
+		if (philo->sim->active == 0)
+			return (NULL);
+		check = check_forks(philo->index, philo->sim);
+		if (check)
+		{
+			acquire_forks(philo);
+			act_eat(philo->sim->info, philo->index, &philo);
+			release_forks(philo);
+		}
+		if ((philo[philo->index].state == NONE)
+			|| (philo[philo->index].state == EATING))
+			act_sleep(philo->sim->info, philo->index, &philo);
+		if ((philo[philo->index].state == NONE)
+			|| (philo[philo->index].state == SLEEPING))
+			act_think(philo->index, &philo);
+		act_die(&philo->sim, philo->sim->info, philo->index, &philo);
+	}
 	return (NULL);
 }

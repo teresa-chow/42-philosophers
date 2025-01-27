@@ -1,34 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mem_utils.c                                        :+:      :+:    :+:   */
+/*   sim_end.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tchow-so  <tchow-so@student.42porto.>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/10 10:46:38 by tchow-so          #+#    #+#             */
-/*   Updated: 2025/01/10 10:46:38 by tchow-so         ###   ########.fr       */
+/*   Created: 2025/01/27 11:33:38 by tchow-so          #+#    #+#             */
+/*   Updated: 2025/01/27 11:33:38 by tchow-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
 
-void	free_forks_array(t_sim *sim)
+void	end_simulation(t_sim *sim)
 {
-	unsigned int	i;
-
-	i = 0;
-	while (i < sim->info.n_philo)
-	{
-		pthread_mutex_destroy(&sim->forks[i].mutex);
-		i++;
-	}
-	free(sim->forks);
-	return ;
-}
-
-void	free_philo_array(t_philo **philo)
-{
-	if (philo)
-		free(*philo);
-	return ;
+	free_forks_array(sim);
+	free_philo_array(&sim->philo);
 }

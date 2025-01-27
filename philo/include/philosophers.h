@@ -38,13 +38,6 @@
 # define CYA "\033[0;36m"
 # define WHI "\033[0;37m"
 
-/*enum	e_error
-{
-	SUCCESS = 0,
-	NO_MEMORY = 1,
-	SIM_FAILED = 2
-};*/
-
 enum	e_state
 {
 	NONE,
@@ -74,8 +67,8 @@ typedef struct s_philo
 	pthread_t		thread;
 	struct timeval	last_meal;
 	enum e_state	state;
-	t_fork	*fork1;
-	t_fork	*fork2;
+	t_fork			*fork1;
+	t_fork			*fork2;
 	struct s_sim	*sim;
 }	t_philo;
 
@@ -85,36 +78,41 @@ typedef struct s_sim
 	bool				active;
 	pthread_t			main;
 	t_fork				*forks;
-//	t_philo				*philo;
+	t_philo				*philo;
 	struct timeval		start;
-//	pthread_mutex_t		counter;
 	pthread_mutex_t		check;
 }	t_sim;
 
 /* ======================= PARSING & ERROR HANDLING ======================== */
 int		check_input(int argc, char **argv, t_info *info);
-void	set_info(int i, unsigned int res, t_info *info);
-// Additional error messages
+// Input value errors
 int		print_above_limit(void);
 int		print_philo_zero(void);
 void	print_usage(void);
+// Memory errors
+int		err_forks(void);
+int		err_threads(t_sim *sim, t_philo **philo);
+// Set info
+void	set_info(int i, unsigned int res, t_info *info);
 
 /* ============================= SIMULATION ================================ */
-void	init_simulation(t_sim *simulation); //review return value
+int		init_simulation(t_sim *simulation);
 // Thread routines
 void	*main_routine(void *arg);
 void	*philo_routine(void *arg);
 // Actions
-int	check_forks(int i, t_sim *sim);
-void    acquire_forks(t_philo *philo);
-void    release_forks(t_philo *philo);
+int		check_forks(int i, t_sim *sim);
+void	acquire_forks(t_philo *philo);
+void	release_forks(t_philo *philo);
 void	act_think(int i, t_philo **philo);
 void	act_eat(t_info info, int i, t_philo **philo);
 void	act_sleep(t_info info, int i, t_philo **philo);
 void	act_die(t_sim **sim, t_info info, int i, t_philo **philo);
+// End simulation
+void	end_simulation(t_sim *sim);
 
 /* =========================== MEMORY HANDLING ============================= */
-void	free_forks_array(t_info info, pthread_mutex_t **forks);
-void	free_philo_array(t_info info, t_philo **philo);
+void	free_forks_array(t_sim *sim);
+void	free_philo_array(t_philo **philo);
 
 #endif
