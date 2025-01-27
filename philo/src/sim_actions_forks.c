@@ -38,22 +38,22 @@ void	acquire_forks(t_philo *philo) //LINES TOO LONG / TOO MANY LINES
 		pthread_mutex_lock(&philo->sim->forks[i].mutex);
 		philo->sim->forks[i].taken = 1;
 		gettimeofday(&now, NULL);
-		printf(WHI "%ld\t\t%d\t" NC YEL "has taken a fork\n" NC, now.tv_usec, i);
+		printf(WHI "%ld\t\t%d\t" NC YEL "has taken a fork\n" NC, now.tv_usec / 1000, i);
 		pthread_mutex_lock(&philo->sim->forks[i + 1].mutex);
 		philo->sim->forks[i + 1].taken = 1;
 		gettimeofday(&now, NULL);
-		printf(WHI "%ld\t\t%d\t" NC YEL "has taken a fork\n" NC, now.tv_usec, i);
+		printf(WHI "%ld\t\t%d\t" NC YEL "has taken a fork\n" NC, now.tv_usec / 1000, i);
 	}
 	else if ((i % 2 != 0) || ((unsigned int)i == philo->sim->info.n_philo - 1))
 	{
 		pthread_mutex_lock(&philo->sim->forks[i - 1].mutex);
 		philo->sim->forks[i - 1].taken = 1;
 		gettimeofday(&now, NULL);
-		printf(WHI "%ld\t\t%d\t" NC YEL "has taken a fork\n" NC, now.tv_usec, i);
+		printf(WHI "%ld\t\t%d\t" NC YEL "has taken a fork\n" NC, now.tv_usec / 1000, i);
 		pthread_mutex_lock(&philo->sim->forks[i].mutex);
 		philo->sim->forks[i].taken = 1;
 		gettimeofday(&now, NULL);
-		printf(WHI "%ld\t\t%d\t" NC YEL "has taken a fork\n" NC, now.tv_usec, i);
+		printf(WHI "%ld\t\t%d\t" NC YEL "has taken a fork\n" NC, now.tv_usec / 1000, i);
 	}
 }
 

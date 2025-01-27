@@ -20,7 +20,7 @@ void	act_think(int i, t_philo **philo)
 		return ;
 	(*philo)[i].state = THINKING;
 	gettimeofday(&now, NULL);
-	printf(WHI "%ld\t\t%d\t" NC CYA "is thinking\n" NC, now.tv_usec, i);
+	printf(WHI "%ld\t\t%d\t" NC CYA "is thinking\n" NC, now.tv_usec / 1000, i);
 	return ;
 }
 
@@ -32,7 +32,7 @@ void	act_eat(t_info info, int i, t_philo **philo)
 		return ;
 	(*philo)[i].state = EATING;
 	gettimeofday(&now, NULL);
-	printf(WHI "%ld\t\t%d\t" NC GRN "is eating\n" NC, now.tv_usec, i);
+	printf(WHI "%ld\t\t%d\t" NC GRN "is eating\n" NC, now.tv_usec / 1000, i);
 	usleep(info.time_to_eat);
 	gettimeofday(&(*philo)[i].last_meal, NULL);
 	return ;
@@ -46,7 +46,7 @@ void	act_sleep(t_info info, int i, t_philo **philo)
 		return ;
 	(*philo)[i].state = SLEEPING;
 	gettimeofday(&now, NULL);
-	printf(WHI "%ld\t\t%d\t" NC BLU "is sleeping\n" NC, now.tv_usec, i);
+	printf(WHI "%ld\t\t%d\t" NC BLU "is sleeping\n" NC, now.tv_usec / 1000, i);
 	usleep(info.time_to_sleep);
 	return ;
 }
@@ -59,10 +59,10 @@ void	act_die(t_sim **sim, t_info info, int i, t_philo **philo)
 		return ;
 	gettimeofday(&now, NULL);
 	if ((unsigned int)(now.tv_usec
-		- (*philo)[i].last_meal.tv_usec) > info.time_to_die)
+		- (*philo)[i].last_meal.tv_usec) / 1000 > info.time_to_die)
 	{
 		(*philo)[i].state = STARVED;
-		printf(WHI "%ld\t\t%d\t" NC RED "has died\n" NC, now.tv_usec, i);
+		printf(WHI "%ld\t\t%d\t" NC RED "has died\n" NC, now.tv_usec / 1000, i);
 		(*sim)->active = 0;
 	}
 	return ;
