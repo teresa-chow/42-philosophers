@@ -58,8 +58,8 @@ void	act_die(t_sim **sim, t_info info, int i, t_philo **philo)
 	if (philo[i]->sim->active == 0)
 		return ;
 	gettimeofday(&now, NULL);
-	if ((unsigned int)(now.tv_usec
-		- (*philo)[i].last_meal.tv_usec) / 1000 > info.time_to_die)
+	if ((now.tv_usec
+		- (*philo)[i].last_meal.tv_usec) > (suseconds_t)info.time_to_die * 1000)
 	{
 		(*philo)[i].state = STARVED;
 		printf(WHI "%ld\t\t%d\t" NC RED "has died\n" NC, now.tv_usec / 1000, i);
