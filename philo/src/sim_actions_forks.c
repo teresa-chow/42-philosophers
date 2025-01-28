@@ -32,28 +32,28 @@ void	acquire_forks(t_philo *philo) //LINES TOO LONG / TOO MANY LINES
 	unsigned int	i;
 	struct timeval	now;
 
-	i = philo->index;
+	i = philo->nb - 1;
 	if ((i == 0 || i % 2 == 0) && (i != philo->sim->info.n_philo - 1))
 	{
 		pthread_mutex_lock(&philo->sim->forks[i].mutex);
 		philo->sim->forks[i].taken = 1;
 		gettimeofday(&now, NULL);
-		printf(WHI "%ld\t\t%d\t" NC YEL "has taken a fork\n" NC, now.tv_usec / 1000, i);
+		printf(WHI "%ld\t\t%d\t" NC YEL "has taken a fork\n" NC, now.tv_usec / 1000, philo->nb);
 		pthread_mutex_lock(&philo->sim->forks[i + 1].mutex);
 		philo->sim->forks[i + 1].taken = 1;
 		gettimeofday(&now, NULL);
-		printf(WHI "%ld\t\t%d\t" NC YEL "has taken a fork\n" NC, now.tv_usec / 1000, i);
+		printf(WHI "%ld\t\t%d\t" NC YEL "has taken a fork\n" NC, now.tv_usec / 1000, philo->nb);
 	}
 	else if ((i % 2 != 0) || ((unsigned int)i == philo->sim->info.n_philo - 1))
 	{
 		pthread_mutex_lock(&philo->sim->forks[i - 1].mutex);
 		philo->sim->forks[i - 1].taken = 1;
 		gettimeofday(&now, NULL);
-		printf(WHI "%ld\t\t%d\t" NC YEL "has taken a fork\n" NC, now.tv_usec / 1000, i);
+		printf(WHI "%ld\t\t%d\t" NC YEL "has taken a fork\n" NC, now.tv_usec / 1000, philo->nb);
 		pthread_mutex_lock(&philo->sim->forks[i].mutex);
 		philo->sim->forks[i].taken = 1;
 		gettimeofday(&now, NULL);
-		printf(WHI "%ld\t\t%d\t" NC YEL "has taken a fork\n" NC, now.tv_usec / 1000, i);
+		printf(WHI "%ld\t\t%d\t" NC YEL "has taken a fork\n" NC, now.tv_usec / 1000, philo->nb);
 	}
 }
 
@@ -61,7 +61,7 @@ void	release_forks(t_philo *philo)
 {
 	unsigned int    i;
 
-	i = philo->index;
+	i = philo->nb - 1;
 	if ((i == 0 || i % 2 == 0) && (i != philo->sim->info.n_philo - 1))
 	{
 		pthread_mutex_unlock(&philo->sim->forks[i].mutex);

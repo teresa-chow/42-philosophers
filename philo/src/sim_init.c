@@ -58,7 +58,7 @@ static int	create_philo(t_info info, t_sim *sim, t_philo **philo)
 	while (i < info.n_philo)
 	{
 		(*philo)[i].state = NONE;
-		(*philo)[i].index = i;
+		(*philo)[i].nb = i + 1;
 		(*philo)[i].sim = sim;
 		if (pthread_create(&(*philo)[i].thread, NULL,
 			&philo_routine, &(*philo)[i]) != 0)

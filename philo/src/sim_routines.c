@@ -46,20 +46,20 @@ void	*philo_routine(void *arg) // TOO MANY LINES
 	{
 		if (philo->sim->active == 0)
 			return (NULL);
-		check = check_forks(philo->index, philo->sim);
+		check = check_forks(philo->nb - 1, philo->sim);
 		if (check)
 		{
 			acquire_forks(philo);
-			act_eat(philo->sim->info, philo->index, &philo);
+			act_eat(philo->sim->info, philo->nb, &philo);
 			release_forks(philo);
 		}
-		if ((philo[philo->index].state == NONE)
-			|| (philo[philo->index].state == EATING))
-			act_sleep(philo->sim->info, philo->index, &philo);
-		if ((philo[philo->index].state == NONE)
-			|| (philo[philo->index].state == SLEEPING))
-			act_think(philo->index, &philo);
-		act_die(&philo->sim, philo->sim->info, philo->index, &philo);
+		if ((philo[philo->nb - 1].state == NONE)
+			|| (philo[philo->nb - 1].state == EATING))
+			act_sleep(philo->sim->info, philo->nb - 1, &philo);
+		if ((philo[philo->nb - 1].state == NONE)
+			|| (philo[philo->nb - 1].state == SLEEPING))
+			act_think(philo->nb - 1, &philo);
+		act_die(&philo->sim, philo->sim->info, philo->nb - 1, &philo);
 	}
 	return (NULL);
 }

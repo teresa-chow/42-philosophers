@@ -22,11 +22,11 @@
 # include <sys/time.h>
 # include <pthread.h>
 
-// Max thread & time caps
+// Max thread & time caps (in milliseconds)
 # define MAX_PHILO 50
-# define MAX_DIE 10000000 /* 10 sec */
-# define MAX_EAT 1000000 /* 1 sec */
-# define MAX_SLEEP 1000000 /* 1 sec */
+# define MAX_DIE 10000 /* 10 sec */
+# define MAX_EAT 1000 /* 1 sec */
+# define MAX_SLEEP 1000 /* 1 sec */
 
 // Printf formatting
 # define NC "\033[0m"
@@ -47,7 +47,7 @@ enum	e_state
 	STARVED
 };
 
-typedef struct s_info
+typedef struct s_info // change members datatype to long, maybe incl. in sim instead of info (?)
 {
 	unsigned int	n_philo;
 	unsigned int	time_to_die;
@@ -55,7 +55,7 @@ typedef struct s_info
 	unsigned int	time_to_sleep;
 }	t_info;
 
-typedef struct s_fork
+typedef struct s_fork // add id var
 {
 	pthread_mutex_t		mutex;
 	bool				taken;
@@ -63,11 +63,11 @@ typedef struct s_fork
 
 typedef struct s_philo
 {
-	unsigned int	index;
+	unsigned int	nb; // change name to id
 	pthread_t		thread;
-	struct timeval	last_meal;
+	struct timeval	last_meal; // unsigned long (?)
 	enum e_state	state;
-	t_fork			*fork1;
+	t_fork			*fork1; // currently still unused, must assign to philo
 	t_fork			*fork2;
 	struct s_sim	*sim;
 }	t_philo;
@@ -79,8 +79,8 @@ typedef struct s_sim
 	pthread_t			main;
 	t_fork				*forks;
 	t_philo				*philo;
-	struct timeval		start;
-	pthread_mutex_t		check;
+	struct timeval		start; // change to long datatype (easier comparisons)
+	pthread_mutex_t		check; // active bool mutex
 }	t_sim;
 
 /* ======================= PARSING & ERROR HANDLING ======================== */
@@ -104,10 +104,10 @@ void	*philo_routine(void *arg);
 int		check_forks(int i, t_sim *sim);
 void	acquire_forks(t_philo *philo);
 void	release_forks(t_philo *philo);
-void	act_think(int i, t_philo **philo);
-void	act_eat(t_info info, int i, t_philo **philo);
-void	act_sleep(t_info info, int i, t_philo **philo);
-void	act_die(t_sim **sim, t_info info, int i, t_philo **philo);
+void	act_think(unsigned int nb, t_philo **philo);
+void	act_eat(t_info info, unsigned int nb, t_philo **philo);
+void	act_sleep(t_info info, unsigned int nb, t_philo **philo);
+void	act_die(t_sim **sim, t_info info, unsigned int nb, t_philo **philo);
 // End simulation
 void	end_simulation(t_sim *sim);
 
