@@ -32,3 +32,12 @@ void	free_philo_array(t_philo **philo)
 		free(*philo);
 	return ;
 }
+
+// REVIEW
+int	err_threads(t_sim *sim, t_philo **philo)
+{
+	free_forks_array(sim); //review
+	free_philo_array(&(*philo)); //review
+	write(2, "Failed to create threads\n", 25);
+	return (-1);
+}

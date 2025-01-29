@@ -24,3 +24,10 @@ int	main(int argc, char **argv)
 	//free_philo_array(&philo); //upon end of simulation
 	return (0);
 }
+
+/*
+To do:
+- one philosopher only scenario
+- test program with 0 and 1 as time_to_xxx -- needs additional protection ?
+- MIN_USLEEP 60 ?
+*/

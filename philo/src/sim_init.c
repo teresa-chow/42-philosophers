@@ -12,74 +12,101 @@
 
 #include "../include/philosophers.h"
 
-static int	create_forks(t_info info, t_fork **forks);
-static int	create_philo(t_info info, t_sim *sim, t_philo **philo);
-static void	start_simulation(t_info info, t_sim *sim, t_philo **philo);
-static void	init_last_meal(unsigned int n_philo, t_philo **philo,
-				struct timeval start_time);
+static int	create_forks(t_sim *sim);
+static int	create_philo(t_sim *sim);
+static void	assign_forks(t_sim *sim);
+static void	start_simulation(t_sim *sim);
 
 int	init_simulation(t_sim *sim)
 {
 	sim->active = 0;
-	pthread_create(&sim->main, NULL, &main_routine, sim);
-	if (!create_forks(sim->info, &sim->forks))
-		return (err_forks());
-	if (!create_philo(sim->info, sim, &sim->philo))
-		return (err_threads(sim, &sim->philo));
-	pthread_join(sim->main, NULL);
+	handle_thread(&sim->main, &main_routine, sim, CREATE); //review if this thread is needed
+	if (create_forks(sim) == -1)
+		return (-1);
+	if (create_philo(sim) == -1)
+		return (err_threads(sim, &sim->philo)); //review : must free forks
+	start_simulation(sim); //should return error if improperly handling mutexes ?
+	handle_thread(&sim->main, NULL, NULL, JOIN);
 	return (0);
 }
 
-static int	create_forks(t_info info, t_fork **forks)
+static int	create_forks(t_sim *sim)
 {
 	unsigned int	i;
 
 	i = 0;
-	*forks = malloc(info.n_philo * sizeof(t_fork));
-	if (!*forks)
-		return (0);
-	while (i < info.n_philo)
+	sim->forks = malloc(sim->info.n_philo * sizeof(t_fork));
+	if (!sim->forks)
 	{
-		pthread_mutex_init(&(*forks)[i].mutex, NULL);
-		(*forks)[i].taken = 0;
+		write(2, "Memory allocation failed\n", 25);
+		return (-1);
+	}
+	while (i < sim->info.n_philo)
+	{
+		sim->forks[i].id = i;
+		handle_mutex(&sim->forks[i].mutex, INIT);
 		i++;
 	}
-	return (1);
+	return (0);
 }
 
-static int	create_philo(t_info info, t_sim *sim, t_philo **philo)
+static int	create_philo(t_sim *sim)
 {
 	unsigned int	i;
 
-	*philo = malloc(info.n_philo * sizeof(t_philo));
-	if (!*philo)
-		return (0);
+	sim->philo = malloc(sim->info.n_philo * sizeof(t_philo));
+	if (!sim->philo)
+		return (-1);
 	i = 0;
-	while (i < info.n_philo)
+	while (i < sim->info.n_philo)
 	{
-		(*philo)[i].state = NONE;
-		(*philo)[i].nb = i + 1;
-		(*philo)[i].sim = sim;
-		if (pthread_create(&(*philo)[i].thread, NULL,
-			&philo_routine, &(*philo)[i]) != 0)
-			return (0);
-		pthread_detach((*philo)[i].thread);
+		sim->philo[i].id = i + 1;
+		sim->philo[i].full = 0;
+		sim->philo[i].n_meals = 0;
+		sim->philo[i].state = NONE;
+		assign_forks(sim);
+		sim->philo[i].sim = sim;
+		if (handle_thread(&sim->philo[i].thread, &philo_routine, &sim->philo[i], CREATE) == -1)
+			return (-1);
+		if (handle_thread(&sim->philo[i].thread, NULL, NULL, DETACH) == -1) // review: detach or join
+			return (-1);
 		i++;
 	}
-	start_simulation(info, sim, philo);
-	return (1);
+	return (0);
 }
 
-static void	start_simulation(t_info info, t_sim *sim, t_philo **philo)
+static void	assign_forks(t_sim *sim)
 {
-	sim->active = 1;
-	memset(&sim->start, 0, sizeof(struct timeval));
-	gettimeofday(&sim->start, NULL);
-	init_last_meal(info.n_philo, philo, sim->start);
+	unsigned int	i;
+	unsigned int	n_philo;
+
+	i = 0;
+	n_philo = sim->info.n_philo;
+	while (i < n_philo)
+	{
+		sim->philo[i].fork1 = &sim->forks[(i + 1) % n_philo];
+		sim->philo[i].fork2 = &sim->forks[i];
+		i++;
+	}
 	return ;
 }
 
-static void	init_last_meal(unsigned int n_philo, t_philo **philo,
+// REVIEW + init each philo's last meal
+static void	start_simulation(t_sim *sim)
+{
+	struct timeval	tv;
+	unsigned long	start_time;
+
+	handle_mutex(&sim->status, INIT);
+	set_bool(&sim->status, &sim->active, 1);
+	gettimeofday(&tv, NULL);
+	start_time = 0;
+	//init_last_meal(info.n_philo, philo, sim->start);
+	return ;
+}
+
+/*
+void	init_last_meal(unsigned int n_philo, t_philo **philo,
 	struct timeval start_time)
 {
 	unsigned int	i;
@@ -92,3 +119,4 @@ static void	init_last_meal(unsigned int n_philo, t_philo **philo,
 	}
 	return ;
 }
+*/

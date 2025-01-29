@@ -12,7 +12,7 @@
 
 #include "../include/philosophers.h"
 
-void	*main_routine(void *arg)
+/*void	*main_routine(void *arg)
 {
 	t_sim	*sim;
 
@@ -28,7 +28,7 @@ void	*main_routine(void *arg)
 			end_simulation(&(*sim));
 	}
 	return (NULL);
-}
+}*/
 
 void	*philo_routine(void *arg) // TOO MANY LINES
 {
@@ -38,11 +38,8 @@ void	*philo_routine(void *arg) // TOO MANY LINES
 	philo = (t_philo *)arg;
 	check = 0;
 	while (philo->sim->active == 0)
-	{
-		if (philo->sim->active == 1)
-			break ;
-	}
-	while (philo->sim->active == 1)
+		;
+	while (philo->sim->active == 1) // REVIEW STOPPED HERE
 	{
 		if (philo->sim->active == 0)
 			return (NULL);

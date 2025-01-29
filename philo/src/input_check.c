@@ -78,13 +78,13 @@ static int	check_limits(int argc, char **argv, t_info *info)
 		{
 			res = res * 10 + (argv[i][j] - '0');
 			if (res > UINT_MAX)
-				return (print_above_limit());
+				return (err_above_limit());
 			j++;
 		}
 		if (i == 1 && res == 0)
-			return (print_philo_zero());
+			return (err_philo_zero());
 		if (!check_max_values(i, res))
-			return (print_above_limit()); // check min values for usleep ?
+			return (err_above_limit()); // check min values for usleep ?
 		set_info(i, res, info);
 		i++;
 	}

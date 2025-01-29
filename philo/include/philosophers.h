@@ -18,12 +18,12 @@
 # include <stdlib.h>
 # include <limits.h>
 # include <stdbool.h>
-# include <string.h>
+//# include <string.h> -- memset
 # include <sys/time.h>
 # include <pthread.h>
 
 // Max thread & time caps (in milliseconds)
-# define MAX_PHILO 50
+# define MAX_PHILO 200
 # define MAX_DIE 10000 /* 10 sec */
 # define MAX_EAT 1000 /* 1 sec */
 # define MAX_SLEEP 1000 /* 1 sec */
@@ -47,6 +47,18 @@ enum	e_state
 	STARVED
 };
 
+// pthread_t and pthread_mutex_t op codes
+enum	e_op
+{
+	CREATE,
+	DETACH,
+	JOIN,
+	INIT,
+	DESTROY,
+	LOCK,
+	UNLOCK
+};
+
 typedef struct s_info // change members datatype to long, maybe incl. in sim instead of info (?)
 {
 	unsigned int	n_philo;
@@ -56,7 +68,7 @@ typedef struct s_info // change members datatype to long, maybe incl. in sim ins
 	int				n_times_to_eat; // added, still unused
 }	t_info;
 
-typedef struct s_fork // add id var
+typedef struct s_fork
 {
 	unsigned long		id;
 	pthread_mutex_t		mutex;
@@ -66,10 +78,12 @@ typedef struct s_philo
 {
 	unsigned long	id;
 	pthread_t		thread;
-	unsigned long	last_meal;
+	bool			full; // added, still unused
+	unsigned int	n_meals; // use long ?
 	enum e_state	state;
-	t_fork			*fork1; // currently still unused, must assign to philo
-	t_fork			*fork2; // currently still unused, must assign to philo
+	t_fork			*fork1;
+	t_fork			*fork2;
+	unsigned long	last_meal;
 	struct s_sim	*sim;
 }	t_philo;
 
@@ -77,7 +91,7 @@ typedef struct s_sim
 {
 	t_info				info;
 	bool				active;
-	pthread_mutex_t		state; // active bool mutex (previously "check")
+	pthread_mutex_t		status; // active bool mutex (previously "check")
 	pthread_t			main;
 	t_fork				*forks;
 	t_philo				*philo;
@@ -87,17 +101,24 @@ typedef struct s_sim
 /* ======================= PARSING & ERROR HANDLING ======================== */
 int		check_input(int argc, char **argv, t_info *info);
 // Input value errors
-int		print_above_limit(void);
-int		print_philo_zero(void);
+int		err_above_limit(void);
+int		err_philo_zero(void);
 void	print_usage(void);
-// Memory errors
-int		err_forks(void);
-int		err_threads(t_sim *sim, t_philo **philo);
 // Set info
 void	set_info(int i, unsigned int res, t_info *info);
 
 /* ============================= SIMULATION ================================ */
 int		init_simulation(t_sim *simulation);
+// General thread and mutex handling
+int		handle_mutex(pthread_mutex_t *mutex, enum e_op op);
+int		handle_thread(pthread_t *thread, void *(*start_routine) (void *),
+		void *arg, enum e_op op);
+// Shared data (mutex protected): setters and getters
+void	set_bool(pthread_mutex_t *mutex, bool *ptr, bool value);
+bool	get_bool(pthread_mutex_t *mutex, bool *ptr);
+void	set_unsigned_long(pthread_mutex_t *mutex, unsigned long *ptr,
+		unsigned long value);
+unsigned long	get_unsigned_long(pthread_mutex_t *mutex, unsigned long *ptr);
 // Thread routines
 void	*main_routine(void *arg);
 void	*philo_routine(void *arg);
@@ -113,6 +134,7 @@ void	act_die(t_sim **sim, t_info info, unsigned int nb, t_philo **philo);
 void	end_simulation(t_sim *sim);
 
 /* =========================== MEMORY HANDLING ============================= */
+int		err_threads(t_sim *sim, t_philo **philo);
 void	free_forks_array(t_sim *sim);
 void	free_philo_array(t_philo **philo);
 

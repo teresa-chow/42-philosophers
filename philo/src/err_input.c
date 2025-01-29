@@ -12,13 +12,13 @@
 
 #include "../include/philosophers.h"
 
-int	print_above_limit(void)
+int	err_above_limit(void)
 {
 	write(2, "Invalid argument(s): value(s) above limit\n", 42);
 	return (0);
 }
 
-int	print_philo_zero(void)
+int	err_philo_zero(void)
 {
 	write(2, "Insufficient number of philosophers to run "
 		"a simulation\n", 56);
