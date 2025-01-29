@@ -30,7 +30,7 @@ int	check_input(int argc, char **argv, t_info *info)
 
 static int	check_argc(int argc)
 {
-	if (argc != 5)
+	if (argc < 5 || argc > 6)
 	{
 		write(2, "Wrong number or arguments\n", 26);
 		print_usage();
@@ -84,8 +84,8 @@ static int	check_limits(int argc, char **argv, t_info *info)
 		if (i == 1 && res == 0)
 			return (print_philo_zero());
 		if (!check_max_values(i, res))
-			return (print_above_limit());
-		set_info(i, (unsigned int)res, info);
+			return (print_above_limit()); // check min values for usleep ?
+		set_info(i, res, info);
 		i++;
 	}
 	return (1);
@@ -100,6 +100,8 @@ static int	check_max_values(int i, unsigned long res)
 	else if (i == 3 && res > MAX_EAT)
 		return (0);
 	else if (i == 4 && res > MAX_SLEEP)
+		return (0);
+	else if (i == 5 && res > INT_MAX) // review if a different limit would be more useful
 		return (0);
 	return (1);
 }

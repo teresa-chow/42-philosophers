@@ -29,5 +29,6 @@ int	print_philo_zero(void)
 void	print_usage(void)
 {
 	write(1, "Usage: ./philo <number_of_philosophers> <time_to_die> "
-		"<time_to_eat> <time_to_sleep>\n", 84);
+		"<time_to_eat> <time_to_sleep> "
+		"[opt.: number_of_times_each_philosopher_must_eat]\n", 134);
 }

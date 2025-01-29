@@ -50,25 +50,26 @@ enum	e_state
 typedef struct s_info // change members datatype to long, maybe incl. in sim instead of info (?)
 {
 	unsigned int	n_philo;
-	unsigned int	time_to_die;
-	unsigned int	time_to_eat;
-	unsigned int	time_to_sleep;
+	unsigned long	time_to_die;
+	unsigned long	time_to_eat;
+	unsigned long	time_to_sleep;
+	int				n_times_to_eat; // added, still unused
 }	t_info;
 
 typedef struct s_fork // add id var
 {
+	unsigned long		id;
 	pthread_mutex_t		mutex;
-	bool				taken;
 }	t_fork;
 
 typedef struct s_philo
 {
-	unsigned int	nb; // change name to id
+	unsigned long	id;
 	pthread_t		thread;
-	struct timeval	last_meal; // unsigned long (?)
+	unsigned long	last_meal;
 	enum e_state	state;
 	t_fork			*fork1; // currently still unused, must assign to philo
-	t_fork			*fork2;
+	t_fork			*fork2; // currently still unused, must assign to philo
 	struct s_sim	*sim;
 }	t_philo;
 
@@ -76,11 +77,11 @@ typedef struct s_sim
 {
 	t_info				info;
 	bool				active;
+	pthread_mutex_t		state; // active bool mutex (previously "check")
 	pthread_t			main;
 	t_fork				*forks;
 	t_philo				*philo;
-	struct timeval		start; // change to long datatype (easier comparisons)
-	pthread_mutex_t		check; // active bool mutex
+	unsigned long		start;
 }	t_sim;
 
 /* ======================= PARSING & ERROR HANDLING ======================== */
