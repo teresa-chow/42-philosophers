@@ -39,11 +39,21 @@ void	*philo_routine(void *arg) // TOO MANY LINES
 	check = 0;
 	while (philo->sim->active == 0)
 		;
-	while (philo->sim->active == 1) // REVIEW STOPPED HERE
+	//acquire_forks
+	//eat
+	//release_forks
+	//sleep
+	//think
+	//die
+	return (NULL);
+}
+
+/*
+while (philo->sim->active == 1) // REVIEW STOPPED HERE
 	{
 		if (philo->sim->active == 0)
 			return (NULL);
-		check = check_forks(philo->nb - 1, philo->sim);
+		check = check_forks(philo->nb - 1, philo->sim); // deleted
 		if (check)
 		{
 			acquire_forks(philo);
@@ -57,6 +67,4 @@ void	*philo_routine(void *arg) // TOO MANY LINES
 			|| (philo[philo->nb - 1].state == SLEEPING))
 			act_think(philo->nb - 1, &philo);
 		act_die(&philo->sim, philo->sim->info, philo->nb - 1, &philo);
-	}
-	return (NULL);
-}
+*/

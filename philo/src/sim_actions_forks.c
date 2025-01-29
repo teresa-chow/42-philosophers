@@ -12,22 +12,15 @@
 
 #include "../include/philosophers.h"
 
-int	check_forks(int i, t_sim *sim)
+void	acquire_forks(t_philo *philo)
 {
-	if ((i == 0 || i % 2 == 0) && ((unsigned int)i != sim->info.n_philo - 1))
-	{
-		if ((sim->forks[i].taken == 0) && (sim->forks[i + 1].taken == 0))
-			return (1);
-	}
-	else if ((i % 2 != 0) || ((unsigned int)i == sim->info.n_philo - 1))
-	{
-		if ((sim->forks[i - 1].taken == 0) && (sim->forks[i].taken == 0))
-			return (1);
-	}
-	return (0);
+	if (philo->id % 2 == 0)
+		;
+	else
+	;
 }
 
-void	acquire_forks(t_philo *philo) //LINES TOO LONG / TOO MANY LINES
+/*void	acquire_forks(t_philo *philo) //LINES TOO LONG / TOO MANY LINES
 {
 	unsigned int	i;
 	struct timeval	now;
@@ -55,7 +48,7 @@ void	acquire_forks(t_philo *philo) //LINES TOO LONG / TOO MANY LINES
 		gettimeofday(&now, NULL);
 		printf(WHI "%ld\t\t%d\t" NC YEL "has taken a fork\n" NC, now.tv_usec / 1000, philo->nb);
 	}
-}
+}*/
 
 void	release_forks(t_philo *philo)
 {

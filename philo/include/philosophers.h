@@ -120,10 +120,9 @@ void	set_unsigned_long(pthread_mutex_t *mutex, unsigned long *ptr,
 		unsigned long value);
 unsigned long	get_unsigned_long(pthread_mutex_t *mutex, unsigned long *ptr);
 // Thread routines
-void	*main_routine(void *arg);
+//void	*main_routine(void *arg);
 void	*philo_routine(void *arg);
 // Actions
-int		check_forks(int i, t_sim *sim);
 void	acquire_forks(t_philo *philo);
 void	release_forks(t_philo *philo);
 void	act_think(unsigned int nb, t_philo **philo);

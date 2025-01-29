@@ -20,13 +20,13 @@ static void	start_simulation(t_sim *sim);
 int	init_simulation(t_sim *sim)
 {
 	sim->active = 0;
-	handle_thread(&sim->main, &main_routine, sim, CREATE); //review if this thread is needed
+	//handle_thread(&sim->main, &main_routine, sim, CREATE);
 	if (create_forks(sim) == -1)
 		return (-1);
 	if (create_philo(sim) == -1)
 		return (err_threads(sim, &sim->philo)); //review : must free forks
 	start_simulation(sim); //should return error if improperly handling mutexes ?
-	handle_thread(&sim->main, NULL, NULL, JOIN);
+	//handle_thread(&sim->main, NULL, NULL, JOIN);
 	return (0);
 }
 
