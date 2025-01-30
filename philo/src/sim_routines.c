@@ -12,25 +12,30 @@
 
 #include "../include/philosophers.h"
 
-/*void	*main_routine(void *arg)
+void	*main_routine(void *arg)
 {
 	t_sim	*sim;
+	unsigned int	i;
 
 	sim = (t_sim *)arg;
 	while (sim->active == 0)
-	{
-		if (sim->active == 1)
-			break ;
-	}
+		;
+	i = 0;
 	while (sim->active == 1)
 	{
-		if (sim->active == 0)
-			end_simulation(&(*sim));
+		if (sim->philo[i].state == STARVED)
+		{
+			set_bool(&sim->status, &sim->active, 0);
+			break ;
+		}
+		i++;
+		if (i == sim->info.n_philo)
+			i = 0;
 	}
 	return (NULL);
-}*/
+}
 
-void	*philo_routine(void *arg) // TOO MANY LINES
+void	*philo_routine(void *arg)
 {
 	t_philo	*philo;
 	int	check;
@@ -39,32 +44,17 @@ void	*philo_routine(void *arg) // TOO MANY LINES
 	check = 0;
 	while (philo->sim->active == 0)
 		;
-	//acquire_forks
-	//eat
-	//release_forks
-	//sleep
-	//think
-	//die
+	if (philo->id % 2 != 0)
+	{
+		act_think(&philo);
+		usleep(50);
+	}
+	while (philo->sim->active)
+	{
+		act_eat(&philo);
+		act_sleep(&philo);
+		act_think(&philo);
+		act_die(&philo);
+	}
 	return (NULL);
 }
-
-/*
-while (philo->sim->active == 1) // REVIEW STOPPED HERE
-	{
-		if (philo->sim->active == 0)
-			return (NULL);
-		check = check_forks(philo->nb - 1, philo->sim); // deleted
-		if (check)
-		{
-			acquire_forks(philo);
-			act_eat(philo->sim->info, philo->nb, &philo);
-			release_forks(philo);
-		}
-		if ((philo[philo->nb - 1].state == NONE)
-			|| (philo[philo->nb - 1].state == EATING))
-			act_sleep(philo->sim->info, philo->nb - 1, &philo);
-		if ((philo[philo->nb - 1].state == NONE)
-			|| (philo[philo->nb - 1].state == SLEEPING))
-			act_think(philo->nb - 1, &philo);
-		act_die(&philo->sim, philo->sim->info, philo->nb - 1, &philo);
-*/

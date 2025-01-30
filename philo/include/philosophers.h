@@ -18,7 +18,6 @@
 # include <stdlib.h>
 # include <limits.h>
 # include <stdbool.h>
-//# include <string.h> -- memset
 # include <sys/time.h>
 # include <pthread.h>
 
@@ -40,7 +39,6 @@
 
 enum	e_state
 {
-	NONE,
 	THINKING,
 	EATING,
 	SLEEPING,
@@ -59,7 +57,7 @@ enum	e_op
 	UNLOCK
 };
 
-typedef struct s_info // change members datatype to long, maybe incl. in sim instead of info (?)
+typedef struct s_info
 {
 	unsigned int	n_philo;
 	unsigned long	time_to_die;
@@ -79,7 +77,7 @@ typedef struct s_philo
 	unsigned long	id;
 	pthread_t		thread;
 	bool			full; // added, still unused
-	unsigned int	n_meals; // use long ?
+	unsigned int	n_meals;
 	enum e_state	state;
 	t_fork			*fork1;
 	t_fork			*fork2;
@@ -91,7 +89,7 @@ typedef struct s_sim
 {
 	t_info				info;
 	bool				active;
-	pthread_mutex_t		status; // active bool mutex (previously "check")
+	pthread_mutex_t		status;
 	pthread_t			main;
 	t_fork				*forks;
 	t_philo				*philo;
@@ -120,15 +118,17 @@ void	set_unsigned_long(pthread_mutex_t *mutex, unsigned long *ptr,
 		unsigned long value);
 unsigned long	get_unsigned_long(pthread_mutex_t *mutex, unsigned long *ptr);
 // Thread routines
-//void	*main_routine(void *arg);
+void	*main_routine(void *arg);
 void	*philo_routine(void *arg);
+// Time tracking
+unsigned long	get_time_ms(t_sim *sim);
 // Actions
 void	acquire_forks(t_philo *philo);
 void	release_forks(t_philo *philo);
-void	act_think(unsigned int nb, t_philo **philo);
-void	act_eat(t_info info, unsigned int nb, t_philo **philo);
-void	act_sleep(t_info info, unsigned int nb, t_philo **philo);
-void	act_die(t_sim **sim, t_info info, unsigned int nb, t_philo **philo);
+void	act_think(t_philo **philo);
+void	act_eat(t_philo **philo);
+void	act_sleep(t_philo **philo);
+void	act_die(t_philo **philo);
 // End simulation
 void	end_simulation(t_sim *sim);
 

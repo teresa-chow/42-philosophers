@@ -20,14 +20,24 @@ static void	start_simulation(t_sim *sim);
 int	init_simulation(t_sim *sim)
 {
 	sim->active = 0;
-	//handle_thread(&sim->main, &main_routine, sim, CREATE);
+	handle_thread(&sim->main, &main_routine, sim, CREATE);
 	if (create_forks(sim) == -1)
 		return (-1);
 	if (create_philo(sim) == -1)
 		return (err_threads(sim, &sim->philo)); //review : must free forks
-	start_simulation(sim); //should return error if improperly handling mutexes ?
-	//handle_thread(&sim->main, NULL, NULL, JOIN);
+	start_simulation(sim);
+	handle_thread(&sim->main, NULL, NULL, JOIN);
 	return (0);
+}
+
+unsigned long	get_time_ms(t_sim *sim)
+{
+	struct timeval	now;
+	unsigned long	timestamp;
+
+	gettimeofday(&now, NULL);
+	timestamp = sim->start - (now.tv_sec * 1000 + now.tv_usec / 1000);
+	return (timestamp);
 }
 
 static int	create_forks(t_sim *sim)
@@ -63,12 +73,12 @@ static int	create_philo(t_sim *sim)
 		sim->philo[i].id = i + 1;
 		sim->philo[i].full = 0;
 		sim->philo[i].n_meals = 0;
-		sim->philo[i].state = NONE;
+		sim->philo[i].state = THINKING;
 		assign_forks(sim);
 		sim->philo[i].sim = sim;
 		if (handle_thread(&sim->philo[i].thread, &philo_routine, &sim->philo[i], CREATE) == -1)
 			return (-1);
-		if (handle_thread(&sim->philo[i].thread, NULL, NULL, DETACH) == -1) // review: detach or join
+		if (handle_thread(&sim->philo[i].thread, NULL, NULL, DETACH) == -1)
 			return (-1);
 		i++;
 	}
@@ -91,32 +101,27 @@ static void	assign_forks(t_sim *sim)
 	return ;
 }
 
-// REVIEW + init each philo's last meal
 static void	start_simulation(t_sim *sim)
 {
-	struct timeval	tv;
-	unsigned long	start_time;
+	struct timeval	now;
 
 	handle_mutex(&sim->status, INIT);
 	set_bool(&sim->status, &sim->active, 1);
-	gettimeofday(&tv, NULL);
-	start_time = 0;
-	//init_last_meal(info.n_philo, philo, sim->start);
+	gettimeofday(&now, NULL);
+	sim->start = now.tv_sec * 1000 + now.tv_usec / 1000;
+	init_last_meal(sim);
 	return ;
 }
 
-/*
-void	init_last_meal(unsigned int n_philo, t_philo **philo,
-	struct timeval start_time)
+void	init_last_meal(t_sim *sim)
 {
 	unsigned int	i;
 
 	i = 0;
-	while (i < n_philo)
+	while (i < sim->info.n_philo)
 	{
-		(*philo)[i].last_meal = start_time;
+		sim->philo[i].last_meal = sim->start;
 		i++;
 	}
 	return ;
 }
-*/
