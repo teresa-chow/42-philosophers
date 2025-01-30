@@ -29,7 +29,6 @@
 
 // Printf formatting
 # define NC "\033[0m"
-// Regular
 # define RED "\033[0;31m"
 # define GRN "\033[0;32m"
 # define YEL "\033[0;33m"
@@ -63,18 +62,18 @@ typedef struct s_info
 	unsigned long	time_to_die;
 	unsigned long	time_to_eat;
 	unsigned long	time_to_sleep;
-	int				n_times_to_eat; // added, still unused
+	unsigned int	n_times_to_eat; // added, still unused
 }	t_info;
 
 typedef struct s_fork
 {
-	unsigned long		id;
+	unsigned int		id;
 	pthread_mutex_t		mutex;
 }	t_fork;
 
 typedef struct s_philo
 {
-	unsigned long	id;
+	unsigned int	id;
 	pthread_t		thread;
 	bool			full; // added, still unused
 	unsigned int	n_meals;
@@ -90,6 +89,7 @@ typedef struct s_sim
 	t_info				info;
 	bool				active;
 	pthread_mutex_t		status;
+	pthread_mutex_t		time;
 	pthread_t			main;
 	t_fork				*forks;
 	t_philo				*philo;
@@ -123,8 +123,8 @@ void	*philo_routine(void *arg);
 // Time tracking
 unsigned long	get_time_ms(t_sim *sim);
 // Actions
-void	acquire_forks(t_philo *philo);
-void	release_forks(t_philo *philo);
+void	acquire_forks(t_philo **philo);
+void	release_forks(t_philo **philo);
 void	act_think(t_philo **philo);
 void	act_eat(t_philo **philo);
 void	act_sleep(t_philo **philo);

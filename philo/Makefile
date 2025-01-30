@@ -17,8 +17,8 @@ NAME		= philo
 # ============================================================================ #
 
 SRC		= $(addprefix $(SRC_DIR)/, main.c input_check.c input_info.c \
-	err_input.c sim_init.c sim_routines.c sim_actions.c \
-	sim_actions_forks.c sim_end.c mem_utils.c)
+	err_input.c sim_init.c handle_pthread.c sim_routines.c sim_actions.c \
+	setters_getters.c sim_actions_forks.c sim_end.c mem_utils.c)
 OBJS	 	= $(addprefix $(BUILD_DIR)/, $(notdir $(SRC:.c=.o)))
 
 
@@ -37,7 +37,7 @@ BUILD_DIR	= .build
 
 CC	= cc
 CFLAGS	=  -Wall -Wextra -Werror -pthread
-#CFLAGS	+=  -fsanitize=thread -g
+CFLAGS	+=  -fsanitize=thread -g
 #CFLAGS	+= -fsanitize=address
 
 MAKE	= make -C

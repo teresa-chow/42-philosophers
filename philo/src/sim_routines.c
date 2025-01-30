@@ -51,7 +51,9 @@ void	*philo_routine(void *arg)
 	}
 	while (philo->sim->active)
 	{
+		acquire_forks(&philo);
 		act_eat(&philo);
+		release_forks(&philo);
 		act_sleep(&philo);
 		act_think(&philo);
 		act_die(&philo);

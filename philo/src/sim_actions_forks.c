@@ -12,20 +12,22 @@
 
 #include "../include/philosophers.h"
 
-void	acquire_forks(t_philo *philo)
+void	acquire_forks(t_philo **philo)
 {
 	unsigned long	timestamp;
 
-	handle_mutex(&philo->fork1->mutex, LOCK);
-	timestamp = get_time_ms(philo->sim);
-	printf(WHI "%ld\t\t%d\t" NC YEL "has taken a fork\n" NC, timestamp, philo->id);
-	handle_mutex(&philo->fork2->mutex, LOCK);
-	timestamp = get_time_ms(philo->sim);
-	printf(WHI "%ld\t\t%d\t" NC YEL "has taken a fork\n" NC, timestamp, philo->id);
+	handle_mutex(&(*philo)->fork1->mutex, LOCK);
+	timestamp = get_time_ms((*philo)->sim);
+	handle_mutex(&(*philo)->sim->time, UNLOCK);
+	printf(WHI "%ld\t\t%d\t" NC YEL "has taken a fork\n" NC, timestamp, (*philo)->id);
+	handle_mutex(&(*philo)->fork2->mutex, LOCK);
+	timestamp = get_time_ms((*philo)->sim);
+	handle_mutex(&(*philo)->sim->time, UNLOCK);
+	printf(WHI "%ld\t\t%d\t" NC YEL "has taken a fork\n" NC, timestamp, (*philo)->id);
 }
 
-void	release_forks(t_philo *philo)
+void	release_forks(t_philo **philo)
 {
-	handle_mutex(&philo->fork1->mutex, UNLOCK);
-	handle_mutex(&philo->fork2->mutex, UNLOCK);
+	handle_mutex(&(*philo)->fork1->mutex, UNLOCK);
+	handle_mutex(&(*philo)->fork2->mutex, UNLOCK);
 }
