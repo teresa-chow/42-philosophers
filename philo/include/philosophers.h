@@ -62,7 +62,7 @@ typedef struct s_info
 	unsigned long	time_to_die;
 	unsigned long	time_to_eat;
 	unsigned long	time_to_sleep;
-	int	n_times_to_eat; // added, still unused
+	int				n_times_to_eat;
 }	t_info;
 
 typedef struct s_fork
@@ -75,7 +75,7 @@ typedef struct s_philo
 {
 	unsigned int	id;
 	pthread_t		thread;
-	bool			full; // added, still unused
+	bool			full;
 	int				n_meals;
 	enum e_state	state;
 	t_fork			*fork1;
@@ -135,7 +135,6 @@ void	act_sleep(t_philo **philo);
 void	act_die(t_philo **philo);
 // End simulation
 bool	starvation_checker(t_sim *sim, unsigned int i);
-//bool	full_checker(t_sim *sim);
 bool	sim_active(t_sim *sim);
 void	end_sim(t_sim *sim);
 
