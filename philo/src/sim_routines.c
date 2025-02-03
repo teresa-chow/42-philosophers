@@ -38,10 +38,8 @@ void	*main_routine(void *arg)
 void	*philo_routine(void *arg)
 {
 	t_philo	*philo;
-	int	check;
 
 	philo = (t_philo *)arg;
-	check = 0;
 	while (philo->sim->active == 0)
 		;
 	if (philo->id % 2 != 0)

@@ -89,7 +89,8 @@ typedef struct s_sim
 	t_info				info;
 	bool				active;
 	pthread_mutex_t		status;
-	pthread_mutex_t		time;
+	pthread_mutex_t		print;
+//	pthread_mutex_t		time;
 	pthread_t			main;
 	t_fork				*forks;
 	t_philo				*philo;

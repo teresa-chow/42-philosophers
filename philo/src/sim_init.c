@@ -25,21 +25,12 @@ int	init_simulation(t_sim *sim)
 		return (-1);
 	if (create_philo(sim) == -1)
 		return (err_threads(sim, &sim->philo)); //review : must free forks
-	handle_mutex(&sim->time, INIT);
+//	handle_mutex(&sim->time, INIT);
+	handle_mutex(&sim->status, INIT);
+	handle_mutex(&sim->print, INIT);
 	start_simulation(sim);
 	handle_thread(&sim->main, NULL, NULL, JOIN);
 	return (0);
-}
-
-unsigned long	get_time_ms(t_sim *sim)
-{
-	struct timeval	now;
-	unsigned long	timestamp;
-
-	handle_mutex(&sim->time, LOCK);
-	gettimeofday(&now, NULL);
-	timestamp = (now.tv_sec * 1000 + now.tv_usec / 1000) - sim->start;
-	return (timestamp);
 }
 
 static int	create_forks(t_sim *sim)
@@ -81,8 +72,6 @@ static int	create_philo(t_sim *sim)
 		sim->philo[i].sim = sim;
 		if (handle_thread(&sim->philo[i].thread, &philo_routine, &sim->philo[i], CREATE) == -1)
 			return (-1);
-		if (handle_thread(&sim->philo[i].thread, NULL, NULL, DETACH) == -1)
-			return (-1);
 		i++;
 	}
 	return (0);
@@ -107,10 +96,16 @@ static void	assign_forks(t_sim *sim)
 static void	start_simulation(t_sim *sim)
 {
 	struct timeval	now;
+	unsigned int	i;
 
-	handle_mutex(&sim->status, INIT);
 	gettimeofday(&now, NULL);
 	sim->start = now.tv_sec * 1000 + now.tv_usec / 1000;
+	i = 0;
+	while (i < sim->info.n_philo)
+	{
+		handle_thread(&sim->philo[i].thread, &philo_routine, &sim->philo[i], DETACH);
+		i++;
+	}
 	set_bool(&sim->status, &sim->active, 1);
 	return ;
 }
