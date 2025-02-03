@@ -18,10 +18,10 @@ int	main(int argc, char **argv)
 
 	if (!check_input(argc, argv, &sim.info))
 		return (1);
-	if ((init_simulation(&sim)) == -1)
+	if ((init_sim(&sim)) == -1)
 		return (1);
-	//free_forks_array(&sim);
-	//free_philo_array(&philo); //upon end of simulation
+	if (!sim_active(&sim))
+		end_sim(&sim);
 	return (0);
 }
 
@@ -30,4 +30,8 @@ To do:
 - one philosopher only scenario
 - test program with 0 and 1 as time_to_xxx -- needs additional protection ?
 - MIN_USLEEP 60 ?
+- set philosopher as full
+- set all as full and exit program
+- check if sim_init error cases will result in leaks
+- deal with starved mid-action scenario
 */

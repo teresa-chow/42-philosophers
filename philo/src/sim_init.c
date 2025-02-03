@@ -15,20 +15,20 @@
 static int	create_forks(t_sim *sim);
 static int	create_philo(t_sim *sim);
 static void	assign_forks(t_sim *sim);
-static void	start_simulation(t_sim *sim);
+static void	start_sim(t_sim *sim);
 
-int	init_simulation(t_sim *sim)
+int	init_sim(t_sim *sim)
 {
-	sim->active = 0;
+	handle_mutex(&sim->status, INIT);
+	handle_mutex(&sim->checker, INIT);
+	handle_mutex(&sim->print, INIT);
+	set_bool(&sim->status, &sim->active, 0);
 	handle_thread(&sim->main, &main_routine, sim, CREATE);
 	if (create_forks(sim) == -1)
-		return (-1);
+		return (err_mutexes());
 	if (create_philo(sim) == -1)
-		return (err_threads(sim, &sim->philo)); //review : must free forks
-//	handle_mutex(&sim->time, INIT);
-	handle_mutex(&sim->status, INIT);
-	handle_mutex(&sim->print, INIT);
-	start_simulation(sim);
+		return (err_threads());
+	start_sim(sim);
 	handle_thread(&sim->main, NULL, NULL, JOIN);
 	return (0);
 }
@@ -93,7 +93,7 @@ static void	assign_forks(t_sim *sim)
 	return ;
 }
 
-static void	start_simulation(t_sim *sim)
+static void	start_sim(t_sim *sim)
 {
 	struct timeval	now;
 	unsigned int	i;

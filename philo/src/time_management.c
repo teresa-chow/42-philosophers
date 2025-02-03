@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   time_management.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tchow-so  <tchow-so@student.42porto.>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/03 11:04:33 by tchow-so          #+#    #+#             */
+/*   Updated: 2025/02/03 11:04:33 by tchow-so         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/philosophers.h"
 
 unsigned long	get_time_ms(t_sim *sim)
@@ -6,9 +18,7 @@ unsigned long	get_time_ms(t_sim *sim)
 	unsigned long	timestamp;
 
 	gettimeofday(&now, NULL);
-//	handle_mutex(&sim->time, LOCK);
 	timestamp = (now.tv_sec * 1000 + now.tv_usec / 1000) - sim->start;
-//	handle_mutex(&sim->time, UNLOCK);
 	return (timestamp);
 }
 

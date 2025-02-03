@@ -101,7 +101,7 @@ static int	check_max_values(int i, unsigned long res)
 		return (0);
 	else if (i == 4 && res > MAX_SLEEP)
 		return (0);
-	else if (i == 5 && res > INT_MAX) // review if a different limit would be more useful
+	else if (i == 5 && res > INT_MAX)
 		return (0);
 	return (1);
 }

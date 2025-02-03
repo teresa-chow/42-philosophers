@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   err_input.c                                        :+:      :+:    :+:   */
+/*   err_msgs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tchow-so  <tchow-so@student.42porto.>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/09 17:51:23 by tchow-so          #+#    #+#             */
-/*   Updated: 2025/01/27 09:39:51 by tchow-so         ###   ########.fr       */
+/*   Created: 2025/01/29 09:03:02 by tchow-so          #+#    #+#             */
+/*   Updated: 2025/02/03 14:58:59 by tchow-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,16 @@ void	print_usage(void)
 	write(1, "Usage: ./philo <number_of_philosophers> <time_to_die> "
 		"<time_to_eat> <time_to_sleep> "
 		"[opt.: number_of_times_each_philosopher_must_eat]\n", 134);
+}
+
+int	err_mutexes(void)
+{
+	write(2, "Failed to create mutexes\n", 25);
+	return (-1);
+}
+
+int	err_threads(void)
+{
+	write(2, "Failed to create threads\n", 25);
+	return (-1);
 }

@@ -62,7 +62,7 @@ typedef struct s_info
 	unsigned long	time_to_die;
 	unsigned long	time_to_eat;
 	unsigned long	time_to_sleep;
-	unsigned int	n_times_to_eat; // added, still unused
+	int	n_times_to_eat; // added, still unused
 }	t_info;
 
 typedef struct s_fork
@@ -76,7 +76,7 @@ typedef struct s_philo
 	unsigned int	id;
 	pthread_t		thread;
 	bool			full; // added, still unused
-	unsigned int	n_meals;
+	int				n_meals;
 	enum e_state	state;
 	t_fork			*fork1;
 	t_fork			*fork2;
@@ -90,7 +90,7 @@ typedef struct s_sim
 	bool				active;
 	pthread_mutex_t		status;
 	pthread_mutex_t		print;
-//	pthread_mutex_t		time;
+	pthread_mutex_t		checker;
 	pthread_t			main;
 	t_fork				*forks;
 	t_philo				*philo;
@@ -99,15 +99,17 @@ typedef struct s_sim
 
 /* ======================= PARSING & ERROR HANDLING ======================== */
 int		check_input(int argc, char **argv, t_info *info);
-// Input value errors
+// Error messages
 int		err_above_limit(void);
 int		err_philo_zero(void);
+int		err_mutexes(void);
+int		err_threads(void);
 void	print_usage(void);
 // Set info
 void	set_info(int i, unsigned int res, t_info *info);
 
 /* ============================= SIMULATION ================================ */
-int		init_simulation(t_sim *simulation);
+int		init_sim(t_sim *sim);
 // General thread and mutex handling
 int		handle_mutex(pthread_mutex_t *mutex, enum e_op op);
 int		handle_thread(pthread_t *thread, void *(*start_routine) (void *),
@@ -123,6 +125,7 @@ void	*main_routine(void *arg);
 void	*philo_routine(void *arg);
 // Time tracking
 unsigned long	get_time_ms(t_sim *sim);
+void	usleep_limit(unsigned long time_ms, t_sim *sim);
 // Actions
 void	acquire_forks(t_philo **philo);
 void	release_forks(t_philo **philo);
@@ -131,11 +134,9 @@ void	act_eat(t_philo **philo);
 void	act_sleep(t_philo **philo);
 void	act_die(t_philo **philo);
 // End simulation
-void	end_simulation(t_sim *sim);
-
-/* =========================== MEMORY HANDLING ============================= */
-int		err_threads(t_sim *sim, t_philo **philo);
-void	free_forks_array(t_sim *sim);
-void	free_philo_array(t_philo **philo);
+bool	starvation_checker(t_sim *sim, unsigned int i);
+//bool	full_checker(t_sim *sim);
+bool	sim_active(t_sim *sim);
+void	end_sim(t_sim *sim);
 
 #endif

@@ -18,16 +18,13 @@ void	*main_routine(void *arg)
 	unsigned int	i;
 
 	sim = (t_sim *)arg;
-	while (sim->active == 0)
+	while (!sim_active(sim))
 		;
 	i = 0;
-	while (sim->active == 1)
+	while (sim_active(sim))
 	{
-		if (sim->philo[i].state == STARVED)
-		{
-			set_bool(&sim->status, &sim->active, 0);
+		if (starvation_checker(sim, i))
 			break ;
-		}
 		i++;
 		if (i == sim->info.n_philo)
 			i = 0;
@@ -40,21 +37,20 @@ void	*philo_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	while (philo->sim->active == 0)
+	while (!sim_active(philo->sim))
 		;
 	if (philo->id % 2 != 0)
 	{
 		act_think(&philo);
 		usleep(50);
 	}
-	while (philo->sim->active)
+	while (sim_active(philo->sim))
 	{
 		acquire_forks(&philo);
 		act_eat(&philo);
 		release_forks(&philo);
 		act_sleep(&philo);
 		act_think(&philo);
-		act_die(&philo);
 	}
 	return (NULL);
 }
