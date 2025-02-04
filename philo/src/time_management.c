@@ -29,17 +29,17 @@ void	usleep_limit(unsigned long time_ms, t_sim *sim)
 	unsigned long	remaining;
 
 	act_start = get_time_ms(sim);
-	while ((get_time_ms(sim) - act_start) > time_ms)
+	while ((get_time_ms(sim) - act_start) < time_ms)
 	{
 		if (!sim_active(sim))
 			break ;
 		elapsed = get_time_ms(sim) - act_start;
 		remaining = time_ms - elapsed;
         if (remaining > 1)
-            usleep((time_ms * 1000) / 2);
+            usleep((remaining * 1000) / 2);
         else
         {
-            while ((get_time_ms(sim) - act_start) > time_ms)
+            while ((get_time_ms(sim) - act_start) < time_ms)
                 ;
         }
 	}

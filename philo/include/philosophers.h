@@ -39,6 +39,7 @@
 enum	e_state
 {
 	THINKING,
+	FORK,
 	EATING,
 	SLEEPING,
 	STARVED
@@ -132,8 +133,12 @@ void	release_forks(t_philo **philo);
 void	act_think(t_philo **philo);
 void	act_eat(t_philo **philo);
 void	act_sleep(t_philo **philo);
-void	act_die(t_philo **philo);
+// State management
+void	change_state(t_philo **philo, enum e_state state);
+void	print_state(t_sim *sim, enum e_state state,
+		unsigned long timestamp, unsigned int id);
 // End simulation
+bool	will_starve(t_philo **philo, unsigned long act_time_ms);
 bool	starvation_checker(t_sim *sim, unsigned int i);
 bool	sim_active(t_sim *sim);
 void	end_sim(t_sim *sim);

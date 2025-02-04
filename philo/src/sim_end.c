@@ -12,6 +12,27 @@
 
 #include "../include/philosophers.h"
 
+bool	will_starve(t_philo **philo, unsigned long act_time_ms)
+{
+	unsigned long	timestamp;
+	unsigned long	remaining;
+	unsigned long	finish;
+
+	if (!sim_active((*philo)->sim))
+		return (0);
+	timestamp = get_time_ms((*philo)->sim);
+	finish = timestamp + act_time_ms;
+	if ((finish - (*philo)->last_meal) > ((*philo)->sim->info.time_to_die))
+	{
+		remaining = ((*philo)->last_meal + (*philo)->sim->info.time_to_die) - timestamp;
+		usleep_limit(remaining, (*philo)->sim);
+		change_state(philo, STARVED);
+		print_state((*philo)->sim, STARVED, timestamp, (*philo)->id);
+		return (1);
+	}
+	return (0);
+}
+
 bool	starvation_checker(t_sim *sim, unsigned int i)
 {
 	handle_mutex(&sim->checker, LOCK);
@@ -20,7 +41,7 @@ bool	starvation_checker(t_sim *sim, unsigned int i)
 		set_bool(&sim->status, &sim->active, 0);
 		handle_mutex(&sim->checker, UNLOCK);
 		return (1);
-    }
+	}
 	handle_mutex(&sim->checker, UNLOCK);
 	return (0);
 }

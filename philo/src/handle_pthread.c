@@ -42,7 +42,8 @@ static int	check_mutex(int status)
 	}
 }
 
-int	handle_thread(pthread_t *thread, void *(*start_routine) (void *), void *arg, enum e_op op)
+int	handle_thread(pthread_t *thread, void *(*start_routine) (void *),
+	void *arg, enum e_op op)
 {
 	int ret;
 

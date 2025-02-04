@@ -17,10 +17,13 @@ static void	acquire_forks_odd(t_philo **philo);
 
 void	acquire_forks(t_philo **philo)
 {
+	if (!sim_active((*philo)->sim))
+		return ;
 	if ((*philo)->id % 2 == 0)
 		acquire_forks_even(philo);
 	else
 		acquire_forks_odd(philo);
+	return ;
 }
 
 static void	acquire_forks_even(t_philo **philo)
@@ -29,10 +32,11 @@ static void	acquire_forks_even(t_philo **philo)
 
 	handle_mutex(&(*philo)->fork1->mutex, LOCK);
 	timestamp = get_time_ms((*philo)->sim);
-	printf(WHI "%ld\t\t%d\t" NC YEL "has taken a fork\n" NC, timestamp, (*philo)->id);
+	print_state((*philo)->sim, FORK, timestamp, (*philo)->id);
 	handle_mutex(&(*philo)->fork2->mutex, LOCK);
 	timestamp = get_time_ms((*philo)->sim);
-	printf(WHI "%ld\t\t%d\t" NC YEL "has taken a fork\n" NC, timestamp, (*philo)->id);
+	print_state((*philo)->sim, FORK, timestamp, (*philo)->id);
+
 }
 
 static void	acquire_forks_odd(t_philo **philo)
@@ -41,10 +45,10 @@ static void	acquire_forks_odd(t_philo **philo)
 
 	handle_mutex(&(*philo)->fork2->mutex, LOCK);
 	timestamp = get_time_ms((*philo)->sim);
-	printf(WHI "%ld\t\t%d\t" NC YEL "has taken a fork\n" NC, timestamp, (*philo)->id);
+	print_state((*philo)->sim, FORK, timestamp, (*philo)->id);
 	handle_mutex(&(*philo)->fork1->mutex, LOCK);
 	timestamp = get_time_ms((*philo)->sim);
-	printf(WHI "%ld\t\t%d\t" NC YEL "has taken a fork\n" NC, timestamp, (*philo)->id);
+	print_state((*philo)->sim, FORK, timestamp, (*philo)->id);
 }
 
 void	release_forks(t_philo **philo)
