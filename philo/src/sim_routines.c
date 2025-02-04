@@ -29,7 +29,12 @@ void	*main_routine(void *arg)
 		if (i == sim->info.n_philo)
 			i = 0;
 	}
-	//wait until all mutexes are unlocked
+	i = 0;
+	while (i < sim->info.n_philo)
+	{
+		if (sim->philo[i]. state == NONE)
+			i++;
+	}
 	return (NULL);
 }
 

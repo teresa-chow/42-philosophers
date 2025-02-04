@@ -42,7 +42,8 @@ enum	e_state
 	FORK,
 	EATING,
 	SLEEPING,
-	STARVED
+	STARVED,
+	NONE
 };
 
 // pthread_t and pthread_mutex_t op codes
