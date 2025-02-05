@@ -20,7 +20,6 @@ static void	start_sim(t_sim *sim);
 int	init_sim(t_sim *sim)
 {
 	handle_mutex(&sim->status, INIT);
-	handle_mutex(&sim->checker, INIT);
 	handle_mutex(&sim->print, INIT);
 	set_bool(&sim->status, &sim->active, 0);
 	handle_thread(&sim->main, &main_routine, sim, CREATE);
@@ -66,6 +65,7 @@ static int	create_philo(t_sim *sim)
 		sim->philo[i].id = i + 1;
 		sim->philo[i].full = 0;
 		sim->philo[i].n_meals = 0;
+		//handle_mutex(&sim->philo[i].mutex, INIT);
 		sim->philo[i].state = THINKING;
 		assign_forks(sim);
 		sim->philo[i].last_meal = 0;

@@ -91,8 +91,8 @@ norm:	## Execute norminette
 ##@ MEMORY MANAGEMENT & THREADING DEBUG
 
 valgrind:	## Run valgrind (compile without fsanitize flags)
-	valgrind --tool=helgrind ./$(NAME) 10 400 200 200
-	valgrind --tool=drd ./$(NAME) 10 400 200 200
+	valgrind --tool=helgrind ./$(NAME) 5 400 200 200
+	valgrind --tool=drd ./$(NAME) 5 400 200 200
 
 
 ##@ TOOL INSTALLATION

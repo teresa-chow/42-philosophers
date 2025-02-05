@@ -77,6 +77,7 @@ typedef struct s_philo
 {
 	unsigned int	id;
 	pthread_t		thread;
+	pthread_mutex_t		mutex;
 	bool			full;
 	int				n_meals;
 	enum e_state	state;
@@ -92,7 +93,6 @@ typedef struct s_sim
 	bool				active;
 	pthread_mutex_t		status;
 	pthread_mutex_t		print;
-	pthread_mutex_t		checker;
 	pthread_t			main;
 	t_fork				*forks;
 	t_philo				*philo;
@@ -116,12 +116,9 @@ int		init_sim(t_sim *sim);
 int		handle_mutex(pthread_mutex_t *mutex, enum e_op op);
 int		handle_thread(pthread_t *thread, void *(*start_routine) (void *),
 		void *arg, enum e_op op);
-// Shared data (mutex protected): setters and getters
+// Shared data (mutex protected): bool setters and getters
 void	set_bool(pthread_mutex_t *mutex, bool *ptr, bool value);
 bool	get_bool(pthread_mutex_t *mutex, bool *ptr);
-void	set_unsigned_long(pthread_mutex_t *mutex, unsigned long *ptr,
-		unsigned long value);
-unsigned long	get_unsigned_long(pthread_mutex_t *mutex, unsigned long *ptr);
 // Thread routines
 void	*main_routine(void *arg);
 void	*philo_routine(void *arg);
@@ -140,7 +137,7 @@ void	print_state(t_sim *sim, enum e_state state,
 		unsigned long timestamp, unsigned int id);
 // End simulation
 bool	will_starve(t_philo **philo, unsigned long act_time_ms);
-bool	starvation_checker(t_sim *sim, unsigned int i);
+void	starvation_checker(t_sim *sim, unsigned int i);
 bool	sim_active(t_sim *sim);
 void	end_sim(t_sim *sim);
 

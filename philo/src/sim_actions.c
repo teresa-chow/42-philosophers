@@ -16,11 +16,8 @@ void	act_think(t_philo **philo)
 {
 	unsigned long	timestamp;
 
-	if (!sim_active((*philo)->sim))
-	{
-		change_state(philo, NONE);
+	if (will_starve(philo, 1))
 		return ;
-	}
 	change_state(philo, THINKING);
 	timestamp = get_time_ms((*philo)->sim);
 	print_state((*philo)->sim, THINKING, timestamp, (*philo)->id);
@@ -31,12 +28,9 @@ void	act_eat(t_philo **philo)
 {
 	unsigned long	timestamp;
 
-	if (!sim_active((*philo)->sim) || will_starve(philo, 1))
-	{
-		release_forks(philo);
-		change_state(philo, NONE);
+	if (will_starve(philo, 1))
 		return ;
-	}
+	acquire_forks(philo);
 	change_state(philo, EATING);
 	timestamp = get_time_ms((*philo)->sim);
 	print_state((*philo)->sim, EATING, timestamp, (*philo)->id);
@@ -51,6 +45,7 @@ void	act_eat(t_philo **philo)
 	usleep_limit((*philo)->sim->info.time_to_eat, (*philo)->sim);
 	if ((*philo)->n_meals == (*philo)->sim->info.n_times_to_eat)
 			(*philo)->full = 1;
+	release_forks(philo);
 	return ;
 }
 
@@ -58,11 +53,8 @@ void	act_sleep(t_philo **philo)
 {
 	unsigned long	timestamp;
 
-	if (!sim_active((*philo)->sim))
-	{
-		change_state(philo, NONE);
+	if (will_starve(philo, 1))
 		return ;
-	}
 	change_state(philo, SLEEPING);
 	timestamp = get_time_ms((*philo)->sim);
 	print_state((*philo)->sim, SLEEPING, timestamp, (*philo)->id);
@@ -74,27 +66,28 @@ void	act_sleep(t_philo **philo)
 
 void	change_state(t_philo **philo, enum e_state state)
 {
-	handle_mutex(&(*philo)->sim->checker, LOCK);
+	handle_mutex(&(*philo)->mutex, LOCK);
 	(*philo)->state = state;
-	handle_mutex(&(*philo)->sim->checker, UNLOCK);
+	handle_mutex(&(*philo)->mutex, UNLOCK);
 }
 
 void	print_state(t_sim *sim, enum e_state state,
 		unsigned long timestamp, unsigned int id)
 {
 	handle_mutex(&sim->print, LOCK);
-	if (!sim_active(sim))
-		return ;
-	if (state == THINKING)
-		printf(WHI "%ld\t\t%d\t" NC CYA "is thinking\n" NC, timestamp, id);
-	else if (state == FORK)
-		printf(WHI "%ld\t\t%d\t" NC
-			YEL "has taken a fork\n" NC, timestamp, id);
-	else if (state == EATING)
-		printf(WHI "%ld\t\t%d\t" NC GRN "is eating\n" NC, timestamp, id);
-	else if (state == SLEEPING)
-		printf(WHI "%ld\t\t%d\t" NC BLU "is sleeping\n" NC, timestamp, id);
-	else if (state == STARVED)
-		printf(WHI "%ld\t\t%d\t" NC RED "has died\n" NC, timestamp, id);
+	if (sim_active(sim))
+	{
+		if (state == THINKING)
+			printf(WHI "%ld\t\t%d\t" NC CYA "is thinking\n" NC, timestamp, id);
+		else if (state == FORK)
+			printf(WHI "%ld\t\t%d\t" NC
+				YEL "has taken a fork\n" NC, timestamp, id);
+		else if (state == EATING)
+			printf(WHI "%ld\t\t%d\t" NC GRN "is eating\n" NC, timestamp, id);
+		else if (state == SLEEPING)
+			printf(WHI "%ld\t\t%d\t" NC BLU "is sleeping\n" NC, timestamp, id);
+		else if (state == STARVED)
+			printf(WHI "%ld\t\t%d\t" NC RED "has died\n" NC, timestamp, id);
+	}
 	handle_mutex(&sim->print, UNLOCK);
 }

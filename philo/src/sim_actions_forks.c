@@ -17,8 +17,6 @@ static void	acquire_forks_odd(t_philo **philo);
 
 void	acquire_forks(t_philo **philo)
 {
-	if (!sim_active((*philo)->sim))
-		return ;
 	if ((*philo)->id % 2 == 0)
 		acquire_forks_even(philo);
 	else

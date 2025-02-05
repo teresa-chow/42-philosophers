@@ -23,17 +23,10 @@ void	*main_routine(void *arg)
 	i = 0;
 	while (sim_active(sim))
 	{
-		if (starvation_checker(sim, i))
-			break ;
+		starvation_checker(sim, i);
 		i++;
 		if (i == sim->info.n_philo)
 			i = 0;
-	}
-	i = 0;
-	while (i < sim->info.n_philo)
-	{
-		if (sim->philo[i]. state == NONE)
-			i++;
 	}
 	return (NULL);
 }
@@ -52,11 +45,13 @@ void	*philo_routine(void *arg)
 	}
 	while (sim_active(philo->sim))
 	{
-		acquire_forks(&philo);
 		act_eat(&philo);
-		release_forks(&philo);
 		act_sleep(&philo);
 		act_think(&philo);
 	}
+	handle_mutex(&philo->mutex, LOCK);
+	if (philo->state != STARVED)
+		philo->state = NONE;
+	handle_mutex(&philo->mutex, UNLOCK);
 	return (NULL);
 }
