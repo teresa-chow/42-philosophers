@@ -14,11 +14,16 @@
 
 static int	create_forks(t_sim *sim);
 static int	create_philo(t_sim *sim);
-static void	assign_forks(t_sim *sim);
+static void	init_philo(t_sim *sim, unsigned int i);
 static void	start_sim(t_sim *sim);
 
 int	init_sim(t_sim *sim)
 {
+	if (sim->info.n_philo == 1)
+	{
+		single_philo(sim->info);
+		return (0);
+	}
 	handle_mutex(&sim->status, INIT);
 	handle_mutex(&sim->print, INIT);
 	set_bool(&sim->status, &sim->active, 0);
@@ -62,14 +67,7 @@ static int	create_philo(t_sim *sim)
 	i = 0;
 	while (i < sim->info.n_philo)
 	{
-		sim->philo[i].id = i + 1;
-		sim->philo[i].full = 0;
-		sim->philo[i].n_meals = 0;
-		handle_mutex(&sim->philo[i].mutex, INIT);
-		sim->philo[i].state = THINKING;
-		assign_forks(sim);
-		sim->philo[i].last_meal = 0;
-		sim->philo[i].sim = sim;
+		init_philo(sim, i);
 		if (handle_thread(&sim->philo[i].thread, &philo_routine, &sim->philo[i], CREATE) == -1)
 			return (-1);
 		i++;
@@ -77,20 +75,16 @@ static int	create_philo(t_sim *sim)
 	return (0);
 }
 
-static void	assign_forks(t_sim *sim)
+static void	init_philo(t_sim *sim, unsigned int i)
 {
-	unsigned int	i;
-	unsigned int	n_philo;
-
-	i = 0;
-	n_philo = sim->info.n_philo;
-	while (i < n_philo)
-	{
-		sim->philo[i].fork1 = &sim->forks[(i + 1) % n_philo];
-		sim->philo[i].fork2 = &sim->forks[i];
-		i++;
-	}
-	return ;
+	sim->philo[i].id = i + 1;
+	sim->philo[i].full = 0;
+	sim->philo[i].n_meals = 0;
+	handle_mutex(&sim->philo[i].mutex, INIT);
+	sim->philo[i].state = THINKING;
+	assign_forks(sim);
+	sim->philo[i].last_meal = 0;
+	sim->philo[i].sim = sim;
 }
 
 static void	start_sim(t_sim *sim)

@@ -112,6 +112,8 @@ void	set_info(int i, unsigned int res, t_info *info);
 
 /* ============================= SIMULATION ================================ */
 int		init_sim(t_sim *sim);
+// Init simulation utils
+void	assign_forks(t_sim *sim);
 // General thread and mutex handling
 int		handle_mutex(pthread_mutex_t *mutex, enum e_op op);
 int		handle_thread(pthread_t *thread, void *(*start_routine) (void *),
@@ -138,6 +140,7 @@ void	print_state(t_sim *sim, enum e_state state, unsigned int id);
 bool	will_starve(t_philo **philo, unsigned long act_time_ms);
 void	starvation_checker(t_sim *sim, unsigned int i);
 void	philos_full_checker(t_sim *sim);
+void	print_philos_full(void);
 bool	sim_active(t_sim *sim);
 void	end_sim(t_sim *sim);
 

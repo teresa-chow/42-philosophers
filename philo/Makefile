@@ -17,8 +17,9 @@ NAME		= philo
 # ============================================================================ #
 
 SRC		= $(addprefix $(SRC_DIR)/, main.c input_check.c input_info.c \
-	err_msgs.c sim_init.c handle_pthread.c sim_routines.c sim_actions.c \
-	sim_actions_forks.c sim_end.c setters_getters.c time_management.c)
+	err_msgs.c sim_init.c sim_init_utils.c handle_pthread.c sim_routines.c \
+	sim_actions.c sim_actions_forks.c sim_end.c sim_msg.c setters_getters.c \
+	time_management.c)
 OBJS	 	= $(addprefix $(BUILD_DIR)/, $(notdir $(SRC:.c=.o)))
 
 

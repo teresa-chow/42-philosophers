@@ -1,0 +1,37 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sim_init_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tchow-so  <tchow-so@student.42porto.>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/05 18:44:14 by tchow-so          #+#    #+#             */
+/*   Updated: 2025/02/05 18:44:14 by tchow-so         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../include/philosophers.h"
+
+void	single_philo(t_info info)
+{
+	printf(WHI "%ld\t\t%d\t" NC CYA "is thinking\n" NC, 0, 1);
+	usleep(info.time_to_die * 1000);
+	printf(WHI "%ld\t\t%d\t" NC RED "has died\n" NC, info.time_to_die, 1);
+	return ;
+}
+
+void	assign_forks(t_sim *sim)
+{
+	unsigned int	i;
+	unsigned int	n_philo;
+
+	i = 0;
+	n_philo = sim->info.n_philo;
+	while (i < n_philo)
+	{
+		sim->philo[i].fork1 = &sim->forks[(i + 1) % n_philo];
+		sim->philo[i].fork2 = &sim->forks[i];
+		i++;
+	}
+	return ;
+}

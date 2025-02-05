@@ -64,8 +64,7 @@ void	philos_full_checker(t_sim *sim)
 	if (full == 1)
 	{
 		handle_mutex(&sim->print, LOCK);
-		printf(GRN "Simulation stopped: all" NC);
-		printf(GRN " philosophers have eaten the minimum amount of times.\n" NC);
+		print_philos_full();
 		handle_mutex(&sim->print, UNLOCK);
 		set_bool(&sim->status, &sim->active, 0);
 	}

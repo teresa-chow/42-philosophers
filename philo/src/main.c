@@ -18,6 +18,11 @@ int	main(int argc, char **argv)
 
 	if (!check_input(argc, argv, &sim.info))
 		return (1);
+	if (sim.info.n_times_to_eat == 0)
+	{
+		print_philos_full();
+		return (0);
+	}
 	if ((init_sim(&sim)) == -1)
 		return (1);
 	end_sim(&sim);
