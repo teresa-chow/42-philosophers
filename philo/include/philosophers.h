@@ -133,11 +133,11 @@ void	act_eat(t_philo **philo);
 void	act_sleep(t_philo **philo);
 // State management
 void	change_state(t_philo **philo, enum e_state state);
-void	print_state(t_sim *sim, enum e_state state,
-		unsigned long timestamp, unsigned int id);
+void	print_state(t_sim *sim, enum e_state state, unsigned int id);
 // End simulation
 bool	will_starve(t_philo **philo, unsigned long act_time_ms);
 void	starvation_checker(t_sim *sim, unsigned int i);
+void	philos_full_checker(t_sim *sim);
 bool	sim_active(t_sim *sim);
 void	end_sim(t_sim *sim);
 

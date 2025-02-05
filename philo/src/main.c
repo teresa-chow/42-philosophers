@@ -15,21 +15,11 @@
 int	main(int argc, char **argv)
 {
 	t_sim	sim;
-	unsigned int	i;
 
 	if (!check_input(argc, argv, &sim.info))
 		return (1);
 	if ((init_sim(&sim)) == -1)
 		return (1);
-	i = 0;
-	while (i < sim.info.n_philo)
-	{
-		handle_mutex(&sim.philo[i].mutex, LOCK);
-		while (sim.philo[i].state != NONE && sim.philo[i].state != STARVED)
-			;
-		i++;
-		handle_mutex(&sim.philo[i].mutex, UNLOCK);
-	}
 	end_sim(&sim);
 	return (0);
 }

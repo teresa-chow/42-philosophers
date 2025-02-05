@@ -12,7 +12,7 @@
 
 #include "../include/philosophers.h"
 
-void	*main_routine(void *arg)
+void	*main_routine(void *arg) // too many lines
 {
 	t_sim	*sim;
 	unsigned int	i;
@@ -23,10 +23,22 @@ void	*main_routine(void *arg)
 	i = 0;
 	while (sim_active(sim))
 	{
+		philos_full_checker(sim);
+		if (!sim_active(sim))
+			break ;
 		starvation_checker(sim, i);
 		i++;
 		if (i == sim->info.n_philo)
 			i = 0;
+	}
+	i = 0;
+	while (i < sim->info.n_philo)
+	{
+		handle_mutex(&sim->philo[i].mutex, LOCK);
+		while (sim->philo[i].state != NONE && sim->philo[i].state != STARVED)
+			;
+		i++;
+		handle_mutex(&sim->philo[i - 1].mutex, UNLOCK);
 	}
 	return (NULL);
 }
@@ -45,7 +57,9 @@ void	*philo_routine(void *arg)
 	}
 	while (sim_active(philo->sim))
 	{
+		acquire_forks(&philo);
 		act_eat(&philo);
+		release_forks(&philo);
 		act_sleep(&philo);
 		act_think(&philo);
 	}

@@ -14,13 +14,10 @@
 
 void	act_think(t_philo **philo)
 {
-	unsigned long	timestamp;
-
-	if (will_starve(philo, 1))
+	if (!sim_active((*philo)->sim) || will_starve(philo, 1))
 		return ;
 	change_state(philo, THINKING);
-	timestamp = get_time_ms((*philo)->sim);
-	print_state((*philo)->sim, THINKING, timestamp, (*philo)->id);
+	print_state((*philo)->sim, THINKING,(*philo)->id);
 	return ;
 }
 
@@ -28,36 +25,28 @@ void	act_eat(t_philo **philo)
 {
 	unsigned long	timestamp;
 
-	if (will_starve(philo, 1))
+	if (!sim_active((*philo)->sim) || will_starve(philo, 1))
 		return ;
-	acquire_forks(philo);
 	change_state(philo, EATING);
 	timestamp = get_time_ms((*philo)->sim);
-	print_state((*philo)->sim, EATING, timestamp, (*philo)->id);
+	print_state((*philo)->sim, EATING, (*philo)->id);
 	(*philo)->last_meal = timestamp;
 	if ((*philo)->sim->info.n_times_to_eat != -1)
 		(*philo)->n_meals++;
 	if (will_starve(philo, (*philo)->sim->info.time_to_eat))
-	{
-		release_forks(philo);
 		return ;
-	}
 	usleep_limit((*philo)->sim->info.time_to_eat, (*philo)->sim);
 	if ((*philo)->n_meals == (*philo)->sim->info.n_times_to_eat)
-			(*philo)->full = 1;
-	release_forks(philo);
+			(*philo)->full = 1; //data race
 	return ;
 }
 
 void	act_sleep(t_philo **philo)
 {
-	unsigned long	timestamp;
-
-	if (will_starve(philo, 1))
+	if (!sim_active((*philo)->sim) || will_starve(philo, 1))
 		return ;
 	change_state(philo, SLEEPING);
-	timestamp = get_time_ms((*philo)->sim);
-	print_state((*philo)->sim, SLEEPING, timestamp, (*philo)->id);
+	print_state((*philo)->sim, SLEEPING, (*philo)->id);
 	if (will_starve(philo, (*philo)->sim->info.time_to_sleep))
 		return ;
 	usleep_limit((*philo)->sim->info.time_to_sleep, (*philo)->sim);
@@ -72,8 +61,11 @@ void	change_state(t_philo **philo, enum e_state state)
 }
 
 void	print_state(t_sim *sim, enum e_state state,
-		unsigned long timestamp, unsigned int id)
+	 unsigned int id)
 {
+	unsigned long timestamp;
+
+	timestamp = get_time_ms(sim);
 	handle_mutex(&sim->print, LOCK);
 	if (sim_active(sim))
 	{
