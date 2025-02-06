@@ -40,7 +40,7 @@ void	usleep_limit(unsigned long time_ms, t_sim *sim)
 		else
 		{
 			while ((get_time_ms(sim) - act_start) < time_ms)
-				;
+				usleep(50);
 		}
 	}
 }

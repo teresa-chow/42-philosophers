@@ -37,6 +37,7 @@ void	starvation_checker(t_sim *sim, unsigned int i)
 {
 	if (sim_active(sim))
 	{
+		usleep(100);
 		handle_mutex(&sim->philo[i].mutex, LOCK);
 		if (sim->philo[i].state == STARVED)
 		{

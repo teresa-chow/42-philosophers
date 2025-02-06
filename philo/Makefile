@@ -92,10 +92,10 @@ norm:	## Execute norminette
 ##@ MEMORY MANAGEMENT & THREADING DEBUG
 
 helgrind:	## Run helgrind (export ARG & compile without fsanitize flags)
-	valgrind --tool=helgrind ./$(NAME) $(ARG)
+	valgrind --tool=helgrind ./$(NAME) 200 400 200 200 5
 
 drd:	## Run drd (export ARG & compile without fsanitize flags)
-	valgrind --tool=drd ./$(NAME) $(ARG)
+	valgrind --tool=drd ./$(NAME) 200 400 200 200 5
 
 
 ##@ TOOL INSTALLATION

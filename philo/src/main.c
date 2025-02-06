@@ -24,19 +24,3 @@ int	main(int argc, char **argv)
 		end_sim(&sim);
 	return (0);
 }
-
-/*
-TO DO:
-- set all as full and exit program
-
-TEST:
-- test program with 0 and 1 as time_to_xxx - MIN_USLEEP 60 ?
-
-FIXED:
-- sim_init error cases will result in leaks
-
-DONE:
-- one philosopher only scenario
-- set philosopher as full
-- deal with starved mid-action scenario
-*/
