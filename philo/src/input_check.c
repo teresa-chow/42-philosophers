@@ -84,7 +84,7 @@ static int	check_limits(int argc, char **argv, t_info *info)
 		if (i == 1 && res == 0)
 			return (err_philo_zero());
 		if (!check_max_values(i, res))
-			return (err_above_limit()); // check min values for usleep ?
+			return (err_above_limit());
 		set_info(i, res, info);
 		i++;
 	}

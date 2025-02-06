@@ -17,7 +17,7 @@ static int	check_thread(int status);
 
 int	handle_mutex(pthread_mutex_t *mutex, enum e_op op)
 {
-	int ret;
+	int	ret;
 
 	ret = -1;
 	if (op == INIT)
@@ -45,7 +45,7 @@ static int	check_mutex(int status)
 int	handle_thread(pthread_t *thread, void *(*start_routine) (void *),
 	void *arg, enum e_op op)
 {
-	int ret;
+	int	ret;
 
 	ret = -1;
 	if (op == CREATE)

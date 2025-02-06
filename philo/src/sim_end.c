@@ -50,8 +50,8 @@ void	starvation_checker(t_sim *sim, unsigned int i)
 
 void	philos_full_checker(t_sim *sim)
 {
-	unsigned int i;
-	bool	full;
+	unsigned int	i;
+	bool			full;
 
 	i = 0;
 	full = 1;

@@ -18,24 +18,23 @@ int	main(int argc, char **argv)
 
 	if (!check_input(argc, argv, &sim.info))
 		return (1);
-	if (sim.info.n_times_to_eat == 0)
-	{
-		print_philos_full();
-		return (0);
-	}
 	if ((init_sim(&sim)) == -1)
 		return (1);
-	end_sim(&sim);
+	if ((sim.info.n_times_to_eat > 0) && (sim.info.n_philo > 1))
+		end_sim(&sim);
 	return (0);
 }
 
 /*
-To do:
-- one philosopher only scenario
-- test program with 0 and 1 as time_to_xxx -- needs additional protection ?
-- MIN_USLEEP 60 ?
-- set philosopher as full
+TO DO:
 - set all as full and exit program
+
+TEST:
+- test program with 0 and 1 as time_to_xxx - MIN_USLEEP 60 ?
 - check if sim_init error cases will result in leaks
+
+DONE:
+- one philosopher only scenario
+- set philosopher as full
 - deal with starved mid-action scenario
 */

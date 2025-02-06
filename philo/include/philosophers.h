@@ -42,8 +42,7 @@ enum	e_state
 	FORK,
 	EATING,
 	SLEEPING,
-	STARVED,
-	NONE
+	STARVED
 };
 
 // pthread_t and pthread_mutex_t op codes
@@ -77,7 +76,7 @@ typedef struct s_philo
 {
 	unsigned int	id;
 	pthread_t		thread;
-	pthread_mutex_t		mutex;
+	pthread_mutex_t	mutex;
 	bool			full;
 	int				n_meals;
 	enum e_state	state;
@@ -100,48 +99,50 @@ typedef struct s_sim
 }	t_sim;
 
 /* ======================= PARSING & ERROR HANDLING ======================== */
-int		check_input(int argc, char **argv, t_info *info);
+int				check_input(int argc, char **argv, t_info *info);
 // Error messages
-int		err_above_limit(void);
-int		err_philo_zero(void);
-int		err_mutexes(void);
-int		err_threads(void);
-void	print_usage(void);
+int				err_above_limit(void);
+int				err_philo_zero(void);
+int				err_mutexes(t_sim *sim);
+int				err_threads(t_sim *sim);
+void			print_usage(void);
 // Set info
-void	set_info(int i, unsigned int res, t_info *info);
+void			set_info(int i, unsigned int res, t_info *info);
 
 /* ============================= SIMULATION ================================ */
-int		init_sim(t_sim *sim);
+int				init_sim(t_sim *sim);
+// Edge case
+int				check_edge_cases(t_info info);
 // Init simulation utils
-void	assign_forks(t_sim *sim);
+void			assign_forks(t_sim *sim);
 // General thread and mutex handling
-int		handle_mutex(pthread_mutex_t *mutex, enum e_op op);
-int		handle_thread(pthread_t *thread, void *(*start_routine) (void *),
-		void *arg, enum e_op op);
+int				handle_mutex(pthread_mutex_t *mutex, enum e_op op);
+int				handle_thread(pthread_t *thread,
+					void *(*start_routine) (void *), void *arg, enum e_op op);
 // Shared data (mutex protected): bool setters and getters
-void	set_bool(pthread_mutex_t *mutex, bool *ptr, bool value);
-bool	get_bool(pthread_mutex_t *mutex, bool *ptr);
+void			set_bool(pthread_mutex_t *mutex, bool *ptr, bool value);
+bool			get_bool(pthread_mutex_t *mutex, bool *ptr);
 // Thread routines
-void	*main_routine(void *arg);
-void	*philo_routine(void *arg);
+void			*main_routine(void *arg);
+void			*philo_routine(void *arg);
 // Time tracking
 unsigned long	get_time_ms(t_sim *sim);
-void	usleep_limit(unsigned long time_ms, t_sim *sim);
+void			usleep_limit(unsigned long time_ms, t_sim *sim);
 // Actions
-void	acquire_forks(t_philo **philo);
-void	release_forks(t_philo **philo);
-void	act_think(t_philo **philo);
-void	act_eat(t_philo **philo);
-void	act_sleep(t_philo **philo);
+void			acquire_forks(t_philo **philo);
+void			release_forks(t_philo **philo);
+void			act_think(t_philo **philo);
+void			act_eat(t_philo **philo);
+void			act_sleep(t_philo **philo);
 // State management
-void	change_state(t_philo **philo, enum e_state state);
-void	print_state(t_sim *sim, enum e_state state, unsigned int id);
+void			change_state(t_philo **philo, enum e_state state);
+void			print_state(t_sim *sim, enum e_state state, unsigned int id);
 // End simulation
-bool	will_starve(t_philo **philo, unsigned long act_time_ms);
-void	starvation_checker(t_sim *sim, unsigned int i);
-void	philos_full_checker(t_sim *sim);
-void	print_philos_full(void);
-bool	sim_active(t_sim *sim);
-void	end_sim(t_sim *sim);
+bool			sim_active(t_sim *sim);
+bool			will_starve(t_philo **philo, unsigned long act_time_ms);
+void			starvation_checker(t_sim *sim, unsigned int i);
+void			philos_full_checker(t_sim *sim);
+void			print_philos_full(void);
+void			end_sim(t_sim *sim);
 
 #endif

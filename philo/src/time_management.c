@@ -35,12 +35,12 @@ void	usleep_limit(unsigned long time_ms, t_sim *sim)
 			break ;
 		elapsed = get_time_ms(sim) - act_start;
 		remaining = time_ms - elapsed;
-        if (remaining > 1)
-            usleep((remaining * 1000) / 2);
-        else
-        {
-            while ((get_time_ms(sim) - act_start) < time_ms)
-                ;
-        }
+		if (remaining > 1)
+			usleep((remaining * 1000) / 2);
+		else
+		{
+			while ((get_time_ms(sim) - act_start) < time_ms)
+				;
+		}
 	}
 }

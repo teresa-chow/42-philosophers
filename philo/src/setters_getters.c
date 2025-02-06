@@ -22,7 +22,7 @@ void	set_bool(pthread_mutex_t *mutex, bool *ptr, bool value)
 bool	get_bool(pthread_mutex_t *mutex, bool *ptr)
 {
 	bool	value;
-	
+
 	handle_mutex(mutex, LOCK);
 	value = *ptr;
 	handle_mutex(mutex, UNLOCK);

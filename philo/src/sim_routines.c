@@ -12,14 +12,15 @@
 
 #include "../include/philosophers.h"
 
-void	*main_routine(void *arg) // too many lines
+static void	start_sim(t_sim *sim);
+
+void	*main_routine(void *arg)
 {
-	t_sim	*sim;
+	t_sim			*sim;
 	unsigned int	i;
 
 	sim = (t_sim *)arg;
-	while (!sim_active(sim))
-		;
+	start_sim(sim);
 	i = 0;
 	while (sim_active(sim))
 	{
@@ -31,15 +32,7 @@ void	*main_routine(void *arg) // too many lines
 		if (i == sim->info.n_philo)
 			i = 0;
 	}
-	i = 0;
-	while (i < sim->info.n_philo)
-	{
-		handle_mutex(&sim->philo[i].mutex, LOCK);
-		while (sim->philo[i].state != NONE && sim->philo[i].state != STARVED)
-			;
-		i++;
-		handle_mutex(&sim->philo[i - 1].mutex, UNLOCK);
-	}
+	usleep(500000);
 	return (NULL);
 }
 
@@ -49,7 +42,7 @@ void	*philo_routine(void *arg)
 
 	philo = (t_philo *)arg;
 	while (!sim_active(philo->sim))
-		;
+		usleep(500);
 	if (philo->id % 2 != 0)
 	{
 		act_think(&philo);
@@ -57,15 +50,27 @@ void	*philo_routine(void *arg)
 	}
 	while (sim_active(philo->sim))
 	{
-		acquire_forks(&philo);
 		act_eat(&philo);
-		release_forks(&philo);
 		act_sleep(&philo);
 		act_think(&philo);
 	}
-	handle_mutex(&philo->mutex, LOCK);
-	if (philo->state != STARVED)
-		philo->state = NONE;
-	handle_mutex(&philo->mutex, UNLOCK);
 	return (NULL);
+}
+
+static void	start_sim(t_sim *sim)
+{
+	struct timeval	now;
+	unsigned int	i;
+
+	i = 0;
+	while (i < sim->info.n_philo)
+	{
+		handle_thread(&sim->philo[i].thread, &philo_routine,
+			&sim->philo[i], DETACH);
+		i++;
+	}
+	gettimeofday(&now, NULL);
+	sim->start = now.tv_sec * 1000 + now.tv_usec / 1000;
+	set_bool(&sim->status, &sim->active, 1);
+	return ;
 }

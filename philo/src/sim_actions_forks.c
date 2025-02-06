@@ -30,7 +30,6 @@ static void	acquire_forks_even(t_philo **philo)
 	print_state((*philo)->sim, FORK, (*philo)->id);
 	handle_mutex(&(*philo)->fork2->mutex, LOCK);
 	print_state((*philo)->sim, FORK, (*philo)->id);
-
 }
 
 static void	acquire_forks_odd(t_philo **philo)

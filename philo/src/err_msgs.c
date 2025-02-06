@@ -33,14 +33,27 @@ void	print_usage(void)
 		"[opt.: number_of_times_each_philosopher_must_eat]\n", 134);
 }
 
-int	err_mutexes(void)
+int	err_mutexes(t_sim *sim)
 {
+	handle_mutex(&sim->print, DESTROY);
+	handle_mutex(&sim->status, DESTROY);
 	write(2, "Failed to create mutexes\n", 25);
 	return (-1);
 }
 
-int	err_threads(void)
+int	err_threads(t_sim *sim)
 {
+	unsigned int	i;
+
+	i = 0;
+	while (i < sim->info.n_philo)
+	{
+		handle_mutex(&sim->forks[i].mutex, DESTROY);
+		i++;
+	}
+	free(sim->forks);
+	handle_mutex(&sim->print, DESTROY);
+	handle_mutex(&sim->status, DESTROY);
 	write(2, "Failed to create threads\n", 25);
 	return (-1);
 }
