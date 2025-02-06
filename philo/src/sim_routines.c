@@ -12,15 +12,16 @@
 
 #include "../include/philosophers.h"
 
-static void	start_sim(t_sim *sim);
-
 void	*main_routine(void *arg)
 {
 	t_sim			*sim;
+	struct timeval	now;
 	unsigned int	i;
 
 	sim = (t_sim *)arg;
-	start_sim(sim);
+	gettimeofday(&now, NULL);
+	sim->start = now.tv_sec * 1000 + now.tv_usec / 1000;
+	set_bool(&sim->status, &sim->active, 1);
 	i = 0;
 	while (sim_active(sim))
 	{
@@ -32,7 +33,6 @@ void	*main_routine(void *arg)
 		if (i == sim->info.n_philo)
 			i = 0;
 	}
-	usleep(500000);
 	return (NULL);
 }
 
@@ -55,22 +55,4 @@ void	*philo_routine(void *arg)
 		act_think(&philo);
 	}
 	return (NULL);
-}
-
-static void	start_sim(t_sim *sim)
-{
-	struct timeval	now;
-	unsigned int	i;
-
-	i = 0;
-	while (i < sim->info.n_philo)
-	{
-		handle_thread(&sim->philo[i].thread, &philo_routine,
-			&sim->philo[i], DETACH);
-		i++;
-	}
-	gettimeofday(&now, NULL);
-	sim->start = now.tv_sec * 1000 + now.tv_usec / 1000;
-	set_bool(&sim->status, &sim->active, 1);
-	return ;
 }

@@ -29,6 +29,7 @@ int	init_sim(t_sim *sim)
 		return (err_threads(sim));
 	handle_thread(&sim->main, &main_routine, sim, CREATE);
 	handle_thread(&sim->main, NULL, NULL, JOIN);
+	start_sim(sim);
 	return (0);
 }
 

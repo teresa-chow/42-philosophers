@@ -45,6 +45,20 @@ void	assign_forks(t_sim *sim)
 	return ;
 }
 
+void	start_sim(t_sim *sim)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (i < sim->info.n_philo)
+	{
+		handle_thread(&sim->philo[i].thread, &philo_routine,
+			&sim->philo[i], JOIN);
+		i++;
+	}
+	return ;
+}
+
 void	print_philos_full(t_sim *sim)
 {
 	handle_mutex(&sim->print, LOCK);
