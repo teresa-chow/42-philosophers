@@ -55,19 +55,21 @@ void	philos_full_checker(t_sim *sim)
 
 	i = 0;
 	full = 1;
-	while (i < sim->info.n_philo)
+	if (sim_active(sim))
 	{
-		if (sim->philo[i].full != 1) //data race
-			full = 0;
-		i++;
+		while (i < sim->info.n_philo)
+		{
+			if (!get_bool(&sim->philo[i].counter, &sim->philo[i].full))
+				full = 0;
+			i++;
+		}
+		if (full == 1)
+		{
+			print_philos_full(sim);
+			set_bool(&sim->status, &sim->active, 0);
+		}
 	}
-	if (full == 1)
-	{
-		handle_mutex(&sim->print, LOCK);
-		print_philos_full();
-		handle_mutex(&sim->print, UNLOCK);
-		set_bool(&sim->status, &sim->active, 0);
-	}
+	return ;
 }
 
 bool	sim_active(t_sim *sim)
@@ -80,15 +82,19 @@ void	end_sim(t_sim *sim)
 	unsigned int	i;
 
 	i = 0;
-	while (i < sim->info.n_philo)
+	if (!sim_active(sim))
 	{
-		handle_mutex(&sim->forks[i].mutex, DESTROY);
-		handle_mutex(&sim->philo[i].mutex, DESTROY);
-		i++;
+		while (i < sim->info.n_philo)
+		{
+			handle_mutex(&sim->forks[i].mutex, DESTROY);
+			handle_mutex(&sim->philo[i].mutex, DESTROY);
+			handle_mutex(&sim->philo[i].counter, DESTROY);
+			i++;
+		}
+		free(sim->forks);
+		if (sim->philo)
+			free(sim->philo);
+		handle_mutex(&sim->print, DESTROY);
+		handle_mutex(&sim->status, DESTROY);
 	}
-	free(sim->forks);
-	if (sim->philo)
-		free(sim->philo);
-	handle_mutex(&sim->print, DESTROY);
-	handle_mutex(&sim->status, DESTROY);
 }

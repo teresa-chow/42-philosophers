@@ -14,16 +14,16 @@
 
 static void	single_philo(t_info info);
 
-int	check_edge_cases(t_info info)
+int	check_edge_cases(t_sim *sim)
 {
-	if (info.n_times_to_eat == 0)
+	if (sim->info.n_times_to_eat == 0)
 	{
-		print_philos_full();
+		print_philos_full(sim);
 		return (1);
 	}
-	else if (info.n_philo == 1)
+	else if (sim->info.n_philo == 1)
 	{
-		single_philo(info);
+		single_philo(sim->info);
 		return (1);
 	}
 	return (0);
@@ -45,10 +45,12 @@ void	assign_forks(t_sim *sim)
 	return ;
 }
 
-void	print_philos_full(void)
+void	print_philos_full(t_sim *sim)
 {
+	handle_mutex(&sim->print, LOCK);
 	printf(GRN "Simulation stopped: "
 		"all philosophers have eaten the minimum amount of times.\n" NC);
+	handle_mutex(&sim->print, UNLOCK);
 }
 
 static void	single_philo(t_info info)

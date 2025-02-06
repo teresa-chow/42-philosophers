@@ -77,6 +77,7 @@ typedef struct s_philo
 	unsigned int	id;
 	pthread_t		thread;
 	pthread_mutex_t	mutex;
+	pthread_mutex_t	counter;
 	bool			full;
 	int				n_meals;
 	enum e_state	state;
@@ -112,7 +113,7 @@ void			set_info(int i, unsigned int res, t_info *info);
 /* ============================= SIMULATION ================================ */
 int				init_sim(t_sim *sim);
 // Edge case
-int				check_edge_cases(t_info info);
+int				check_edge_cases(t_sim *sim);
 // Init simulation utils
 void			assign_forks(t_sim *sim);
 // General thread and mutex handling
@@ -142,7 +143,7 @@ bool			sim_active(t_sim *sim);
 bool			will_starve(t_philo **philo, unsigned long act_time_ms);
 void			starvation_checker(t_sim *sim, unsigned int i);
 void			philos_full_checker(t_sim *sim);
-void			print_philos_full(void);
+void			print_philos_full(t_sim *sim);
 void			end_sim(t_sim *sim);
 
 #endif

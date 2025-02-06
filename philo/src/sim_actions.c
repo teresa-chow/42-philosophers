@@ -42,7 +42,7 @@ void	act_eat(t_philo **philo)
 	usleep_limit((*philo)->sim->info.time_to_eat, (*philo)->sim);
 	release_forks(philo);
 	if ((*philo)->n_meals == (*philo)->sim->info.n_times_to_eat)
-		(*philo)->full = 1; //data race
+		set_bool(&(*philo)->counter, &(*philo)->full, 1);
 	return ;
 }
 

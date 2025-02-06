@@ -18,7 +18,7 @@ static void	init_philo(t_sim *sim, unsigned int i);
 
 int	init_sim(t_sim *sim)
 {
-	if (check_edge_cases(sim->info))
+	if (check_edge_cases(sim))
 		return (0);
 	handle_mutex(&sim->status, INIT);
 	handle_mutex(&sim->print, INIT);
@@ -77,6 +77,7 @@ static void	init_philo(t_sim *sim, unsigned int i)
 	sim->philo[i].full = 0;
 	sim->philo[i].n_meals = 0;
 	handle_mutex(&sim->philo[i].mutex, INIT);
+	handle_mutex(&sim->philo[i].counter, INIT);
 	sim->philo[i].state = THINKING;
 	assign_forks(sim);
 	sim->philo[i].last_meal = 0;

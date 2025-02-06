@@ -31,7 +31,9 @@ TO DO:
 
 TEST:
 - test program with 0 and 1 as time_to_xxx - MIN_USLEEP 60 ?
-- check if sim_init error cases will result in leaks
+
+FIXED:
+- sim_init error cases will result in leaks
 
 DONE:
 - one philosopher only scenario

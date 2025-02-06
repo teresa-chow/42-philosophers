@@ -17,7 +17,7 @@ NAME		= philo
 # ============================================================================ #
 
 SRC		= $(addprefix $(SRC_DIR)/, main.c input_check.c input_info.c \
-	err_msgs.c sim_init.c sim_init_utils.c handle_pthread.c sim_routines.c \
+	handle_err.c sim_init.c sim_init_utils.c handle_pthread.c sim_routines.c \
 	sim_actions.c sim_actions_forks.c sim_end.c setters_getters.c \
 	time_management.c)
 OBJS	 	= $(addprefix $(BUILD_DIR)/, $(notdir $(SRC:.c=.o)))
@@ -37,7 +37,7 @@ BUILD_DIR	= .build
 # ============================================================================ #
 
 CC	= cc
-CFLAGS	=  -Wall -Wextra -Werror -pthread
+CFLAGS	=  -Wall -Wextra -Werror -pthread -g
 #CFLAGS	+=  -fsanitize=thread -g
 #CFLAGS	+= -fsanitize=address
 
@@ -91,9 +91,11 @@ norm:	## Execute norminette
 
 ##@ MEMORY MANAGEMENT & THREADING DEBUG
 
-valgrind:	## Run valgrind (compile without fsanitize flags)
-	valgrind --tool=helgrind ./$(NAME) 5 400 200 200
-	valgrind --tool=drd ./$(NAME) 5 400 200 200
+helgrind:	## Run helgrind (export ARG & compile without fsanitize flags)
+	valgrind --tool=helgrind ./$(NAME) $(ARG)
+
+drd:	## Run drd (export ARG & compile without fsanitize flags)
+	valgrind --tool=drd ./$(NAME) $(ARG)
 
 
 ##@ TOOL INSTALLATION
@@ -117,7 +119,7 @@ help:	## Display this help info
 		substr($$0, 5) } ' Makefile
 	@printf "\n"
 
-.PHONY: all clean fclean re norm valgrind install help
+.PHONY: all clean fclean re norm helgrind drd install help
 
 
 # ============================================================================ #
