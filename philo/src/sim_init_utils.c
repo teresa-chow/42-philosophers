@@ -52,7 +52,7 @@ void	start_sim(t_sim *sim)
 	i = 0;
 	while (i < sim->info.n_philo)
 	{
-		handle_thread(&sim->philo[i].thread, &philo_routine,
+		handle_thread(&sim->philo[i].thread, NULL,
 			&sim->philo[i], JOIN);
 		i++;
 	}
