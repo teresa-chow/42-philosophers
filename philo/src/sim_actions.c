@@ -62,7 +62,8 @@ void	act_sleep(t_philo **philo)
 void	change_state(t_philo **philo, enum e_state state)
 {
 	handle_mutex(&(*philo)->mutex, LOCK);
-	(*philo)->state = state;
+	if ((*philo)->state != STARVED)
+		(*philo)->state = state;
 	handle_mutex(&(*philo)->mutex, UNLOCK);
 }
 
@@ -90,4 +91,5 @@ void	print_state(t_sim *sim, enum e_state state,
 			printf(WHI "%ld\t\t%d\t" NC RED "has died\n" NC, timestamp, id);
 	}
 	handle_mutex(&sim->print, UNLOCK);
+	return ;
 }

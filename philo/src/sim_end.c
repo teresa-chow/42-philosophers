@@ -80,7 +80,13 @@ bool	sim_active(t_sim *sim)
 void	end_sim(t_sim *sim)
 {
 	unsigned int	i;
-
+	
+	i = 0;
+	while (i < sim->info.n_philo)
+	{
+		handle_thread(&sim->philo[i].thread, NULL, NULL, JOIN);
+		i++;
+	}
 	i = 0;
 	while (i < sim->info.n_philo)
 	{

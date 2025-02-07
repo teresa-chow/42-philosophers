@@ -83,20 +83,11 @@ static void	init_philo(t_sim *sim, unsigned int i)
 
 void run_sim(t_sim *sim)
 {
-	unsigned int	i;
 	struct timeval	now;
 
 	gettimeofday(&now, NULL);
 	sim->start = now.tv_sec * 1000 + now.tv_usec / 1000;
 	set_bool(&sim->status, &sim->active, 1);
 	monitor_sim(sim);
-	i = 0;
-	while (i < sim->info.n_philo)
-	{
-		usleep(1);
-		handle_thread(&sim->philo[i].thread, NULL, NULL, DETACH);
-		usleep(1);
-		i++;
-	}
 	return ;
 }

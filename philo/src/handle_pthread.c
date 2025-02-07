@@ -36,10 +36,7 @@ static int	check_mutex(int status)
 	if (status == 0)
 		return (0);
 	else
-	{
-		write(2, "Mutex error\n", 12);
 		return (-1);
-	}
 }
 
 int	handle_thread(pthread_t *thread, void *(*start_routine) (void *),
@@ -62,8 +59,5 @@ static int	check_thread(int status)
 	if (status == 0)
 		return (0);
 	else
-	{
-		write(2, "Thread error\n", 12);
 		return (-1);
-	}
 }
