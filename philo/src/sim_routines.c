@@ -12,37 +12,13 @@
 
 #include "../include/philosophers.h"
 
-void	*main_routine(void *arg)
-{
-	t_sim			*sim;
-	struct timeval	now;
-	unsigned int	i;
-
-	sim = (t_sim *)arg;
-	gettimeofday(&now, NULL);
-	sim->start = now.tv_sec * 1000 + now.tv_usec / 1000;
-	set_bool(&sim->status, &sim->active, 1);
-	i = 0;
-	while (sim_active(sim))
-	{
-		philos_full_checker(sim);
-		if (!sim_active(sim))
-			break ;
-		starvation_checker(sim, i);
-		i++;
-		if (i == sim->info.n_philo)
-			i = 0;
-	}
-	return (NULL);
-}
-
 void	*philo_routine(void *arg)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
 	while (!sim_active(philo->sim))
-		usleep(50);
+		usleep(5);
 	if (philo->id % 2 != 0)
 	{
 		act_think(&philo);

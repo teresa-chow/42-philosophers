@@ -81,8 +81,8 @@ typedef struct s_philo
 	bool			full;
 	int				n_meals;
 	enum e_state	state;
-	t_fork			*fork1;
-	t_fork			*fork2;
+	pthread_mutex_t	*fork1;
+	pthread_mutex_t	*fork2;
 	unsigned long	last_meal;
 	struct s_sim	*sim;
 }	t_philo;
@@ -93,8 +93,8 @@ typedef struct s_sim
 	bool				active;
 	pthread_mutex_t		status;
 	pthread_mutex_t		print;
-	pthread_t			main;
-	t_fork				*forks;
+	//pthread_t			main;
+	pthread_mutex_t		*forks;
 	t_philo				*philo;
 	unsigned long		start;
 }	t_sim;
@@ -112,7 +112,7 @@ void			set_info(int i, unsigned int res, t_info *info);
 
 /* ============================= SIMULATION ================================ */
 int				init_sim(t_sim *sim);
-void			start_sim(t_sim *sim);
+void			monitor_sim(t_sim *sim);
 // Edge case
 int				check_edge_cases(t_sim *sim);
 // Init simulation utils

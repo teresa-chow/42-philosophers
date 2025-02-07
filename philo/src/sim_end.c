@@ -86,7 +86,7 @@ void	end_sim(t_sim *sim)
 	{
 		while (i < sim->info.n_philo)
 		{
-			handle_mutex(&sim->forks[i].mutex, DESTROY);
+			handle_mutex(&sim->forks[i], DESTROY);
 			handle_mutex(&sim->philo[i].mutex, DESTROY);
 			handle_mutex(&sim->philo[i].counter, DESTROY);
 			i++;

@@ -15,6 +15,7 @@
 static int	create_forks(t_sim *sim);
 static int	create_philo(t_sim *sim);
 static void	init_philo(t_sim *sim, unsigned int i);
+static void start_sim(t_sim *sim);
 
 int	init_sim(t_sim *sim)
 {
@@ -27,8 +28,6 @@ int	init_sim(t_sim *sim)
 		return (err_mutexes(sim));
 	if (create_philo(sim) == -1)
 		return (err_threads(sim));
-	handle_thread(&sim->main, &main_routine, sim, CREATE);
-	handle_thread(&sim->main, NULL, NULL, JOIN);
 	start_sim(sim);
 	return (0);
 }
@@ -38,7 +37,7 @@ static int	create_forks(t_sim *sim)
 	unsigned int	i;
 
 	i = 0;
-	sim->forks = malloc(sim->info.n_philo * sizeof(t_fork));
+	sim->forks = malloc(sim->info.n_philo * sizeof(pthread_mutex_t));
 	if (!sim->forks)
 	{
 		write(2, "Memory allocation failed\n", 25);
@@ -46,8 +45,7 @@ static int	create_forks(t_sim *sim)
 	}
 	while (i < sim->info.n_philo)
 	{
-		sim->forks[i].id = i;
-		handle_mutex(&sim->forks[i].mutex, INIT);
+		handle_mutex(&sim->forks[i], INIT);
 		i++;
 	}
 	return (0);
@@ -83,4 +81,22 @@ static void	init_philo(t_sim *sim, unsigned int i)
 	assign_forks(sim);
 	sim->philo[i].last_meal = 0;
 	sim->philo[i].sim = sim;
+}
+
+static void start_sim(t_sim *sim)
+{
+	struct timeval	now;
+	unsigned int	i;
+
+	i = 0;
+	gettimeofday(&now, NULL);
+	sim->start = now.tv_sec * 1000 + now.tv_usec / 1000;
+	set_bool(&sim->status, &sim->active, 1);
+	while (i < sim->info.n_philo)
+	{
+		handle_thread(&sim->philo[i].thread, NULL, NULL, JOIN);
+		i++;
+	}
+	monitor_sim(sim);
+	return ;
 }

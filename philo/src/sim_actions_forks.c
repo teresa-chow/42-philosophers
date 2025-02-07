@@ -26,17 +26,17 @@ void	acquire_forks(t_philo **philo)
 
 static void	acquire_forks_even(t_philo **philo)
 {
-	handle_mutex(&(*philo)->fork1->mutex, LOCK);
+	handle_mutex((*philo)->fork1, LOCK);
 	print_state((*philo)->sim, FORK, (*philo)->id);
-	handle_mutex(&(*philo)->fork2->mutex, LOCK);
+	handle_mutex((*philo)->fork2, LOCK);
 	print_state((*philo)->sim, FORK, (*philo)->id);
 }
 
 static void	acquire_forks_odd(t_philo **philo)
 {
-	handle_mutex(&(*philo)->fork2->mutex, LOCK);
+	handle_mutex((*philo)->fork2, LOCK);
 	print_state((*philo)->sim, FORK, (*philo)->id);
-	handle_mutex(&(*philo)->fork1->mutex, LOCK);
+	handle_mutex((*philo)->fork1, LOCK);
 	print_state((*philo)->sim, FORK, (*philo)->id);
 }
 
@@ -44,12 +44,12 @@ void	release_forks(t_philo **philo)
 {
 	if ((*philo)->id % 2 == 0)
 	{
-		handle_mutex(&(*philo)->fork1->mutex, UNLOCK);
-		handle_mutex(&(*philo)->fork2->mutex, UNLOCK);
+		handle_mutex((*philo)->fork1, UNLOCK);
+		handle_mutex((*philo)->fork2, UNLOCK);
 	}
 	else
 	{
-		handle_mutex(&(*philo)->fork2->mutex, UNLOCK);
-		handle_mutex(&(*philo)->fork1->mutex, UNLOCK);
+		handle_mutex((*philo)->fork2, UNLOCK);
+		handle_mutex((*philo)->fork1, UNLOCK);
 	}
 }

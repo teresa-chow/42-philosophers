@@ -48,7 +48,7 @@ int	err_threads(t_sim *sim)
 	i = 0;
 	while (i < sim->info.n_philo)
 	{
-		handle_mutex(&sim->forks[i].mutex, DESTROY);
+		handle_mutex(&sim->forks[i], DESTROY);
 		i++;
 	}
 	free(sim->forks);
