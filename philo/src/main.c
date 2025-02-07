@@ -20,7 +20,10 @@ int	main(int argc, char **argv)
 		return (1);
 	if ((init_sim(&sim)) == -1)
 		return (1);
-	if ((sim.info.n_times_to_eat > 0) && (sim.info.n_philo > 1))
+	if ((sim.info.n_times_to_eat != 0) && (sim.info.n_philo > 1))
+	{
+		run_sim(&sim);
 		end_sim(&sim);
+	}
 	return (0);
 }

@@ -82,19 +82,16 @@ void	end_sim(t_sim *sim)
 	unsigned int	i;
 
 	i = 0;
-	if (!sim_active(sim))
+	while (i < sim->info.n_philo)
 	{
-		while (i < sim->info.n_philo)
-		{
-			handle_mutex(&sim->forks[i], DESTROY);
-			handle_mutex(&sim->philo[i].mutex, DESTROY);
-			handle_mutex(&sim->philo[i].counter, DESTROY);
-			i++;
-		}
-		free(sim->forks);
-		if (sim->philo)
-			free(sim->philo);
-		handle_mutex(&sim->print, DESTROY);
-		handle_mutex(&sim->status, DESTROY);
+		handle_mutex(&sim->forks[i], DESTROY);
+		handle_mutex(&sim->philo[i].mutex, DESTROY);
+		handle_mutex(&sim->philo[i].counter, DESTROY);
+		i++;
 	}
+	free(sim->forks);
+	if (sim->philo)
+		free(sim->philo);
+	handle_mutex(&sim->print, DESTROY);
+	handle_mutex(&sim->status, DESTROY);
 }

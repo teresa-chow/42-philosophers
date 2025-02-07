@@ -18,6 +18,7 @@ void	act_think(t_philo **philo)
 		return ;
 	change_state(philo, THINKING);
 	print_state((*philo)->sim, THINKING, (*philo)->id);
+	usleep_limit(1, (*philo)->sim);
 	return ;
 }
 
@@ -70,10 +71,12 @@ void	print_state(t_sim *sim, enum e_state state,
 {
 	unsigned long	timestamp;
 
+	if (!sim_active(sim))
+		return ;
 	handle_mutex(&sim->print, LOCK);
+	timestamp = get_time_ms(sim);
 	if (sim_active(sim))
 	{
-		timestamp = get_time_ms(sim);
 		if (state == THINKING)
 			printf(WHI "%ld\t\t%d\t" NC CYA "is thinking\n" NC, timestamp, id);
 		else if (state == FORK)

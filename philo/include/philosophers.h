@@ -105,6 +105,7 @@ void			set_info(int i, unsigned int res, t_info *info);
 
 /* ============================= SIMULATION ================================ */
 int				init_sim(t_sim *sim);
+void			run_sim(t_sim *sim);
 void			monitor_sim(t_sim *sim);
 // Edge case
 int				check_edge_cases(t_sim *sim);

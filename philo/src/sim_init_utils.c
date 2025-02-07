@@ -18,7 +18,9 @@ int	check_edge_cases(t_sim *sim)
 {
 	if (sim->info.n_times_to_eat == 0)
 	{
+		handle_mutex(&sim->print, INIT);
 		print_philos_full(sim);
+		handle_mutex(&sim->print, DESTROY);
 		return (1);
 	}
 	else if (sim->info.n_philo == 1)

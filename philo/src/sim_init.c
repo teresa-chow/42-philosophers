@@ -15,7 +15,6 @@
 static int	create_forks(t_sim *sim);
 static int	create_philo(t_sim *sim);
 static void	init_philo(t_sim *sim, unsigned int i);
-static void start_sim(t_sim *sim);
 
 int	init_sim(t_sim *sim)
 {
@@ -28,7 +27,6 @@ int	init_sim(t_sim *sim)
 		return (err_mutexes(sim));
 	if (create_philo(sim) == -1)
 		return (err_threads(sim));
-	start_sim(sim);
 	return (0);
 }
 
@@ -83,19 +81,21 @@ static void	init_philo(t_sim *sim, unsigned int i)
 	sim->philo[i].sim = sim;
 }
 
-static void start_sim(t_sim *sim)
+void run_sim(t_sim *sim)
 {
-	struct timeval	now;
 	unsigned int	i;
+	struct timeval	now;
 
-	i = 0;
 	gettimeofday(&now, NULL);
 	sim->start = now.tv_sec * 1000 + now.tv_usec / 1000;
 	set_bool(&sim->status, &sim->active, 1);
 	monitor_sim(sim);
+	i = 0;
 	while (i < sim->info.n_philo)
 	{
-		handle_thread(&sim->philo[i].thread, NULL, NULL, JOIN);
+		usleep(1);
+		handle_thread(&sim->philo[i].thread, NULL, NULL, DETACH);
+		usleep(1);
 		i++;
 	}
 	return ;

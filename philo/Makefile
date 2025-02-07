@@ -38,7 +38,7 @@ BUILD_DIR	= .build
 
 CC	= cc
 CFLAGS	=  -Wall -Wextra -Werror -pthread
-CFLAGS	+=  -fsanitize=thread -g
+#CFLAGS	+=  -fsanitize=thread -g
 #CFLAGS	+= -fsanitize=address
 
 MAKE	= make -C
