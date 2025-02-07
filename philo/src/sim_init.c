@@ -92,11 +92,11 @@ static void start_sim(t_sim *sim)
 	gettimeofday(&now, NULL);
 	sim->start = now.tv_sec * 1000 + now.tv_usec / 1000;
 	set_bool(&sim->status, &sim->active, 1);
+	monitor_sim(sim);
 	while (i < sim->info.n_philo)
 	{
 		handle_thread(&sim->philo[i].thread, NULL, NULL, JOIN);
 		i++;
 	}
-	monitor_sim(sim);
 	return ;
 }

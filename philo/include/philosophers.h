@@ -66,12 +66,6 @@ typedef struct s_info
 	int				n_times_to_eat;
 }	t_info;
 
-typedef struct s_fork
-{
-	unsigned int		id;
-	pthread_mutex_t		mutex;
-}	t_fork;
-
 typedef struct s_philo
 {
 	unsigned int	id;
@@ -93,7 +87,6 @@ typedef struct s_sim
 	bool				active;
 	pthread_mutex_t		status;
 	pthread_mutex_t		print;
-	//pthread_t			main;
 	pthread_mutex_t		*forks;
 	t_philo				*philo;
 	unsigned long		start;
