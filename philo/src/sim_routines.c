@@ -29,3 +29,22 @@ void	*philo_routine(void *arg)
 	}
 	return (NULL);
 }
+
+void	*single_routine(void *arg)
+{
+	t_philo	*philo;
+	struct timeval	now;
+	unsigned long	timestamp;
+
+	philo = (t_philo *)arg;
+	gettimeofday(&now, NULL);
+	philo->sim->start = (now.tv_sec * 1000 + now.tv_usec / 1000);
+	timestamp = get_time_ms(philo->sim);
+	printf(WHI "%ld\t\t%d\t" NC CYA "is thinking\n" NC, timestamp, 1);
+	printf(WHI "%ld\t\t%d\t" NC
+				YEL "has taken a fork\n" NC, timestamp, 1);
+	usleep(philo->sim->info.time_to_die * 1000);
+	timestamp = get_time_ms(philo->sim);
+	printf(WHI "%ld\t\t%d\t" NC RED "has died\n" NC, timestamp, 1);
+	return (NULL);
+}

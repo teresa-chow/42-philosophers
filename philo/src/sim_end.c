@@ -84,7 +84,9 @@ void	end_sim(t_sim *sim)
 	i = 0;
 	while (i < sim->info.n_philo)
 	{
+		//printf("%d is about to join\n", i);
 		handle_thread(&sim->philo[i].thread, NULL, NULL, JOIN);
+		//printf("%d has joined\n", i);
 		i++;
 	}
 	i = 0;

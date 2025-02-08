@@ -75,22 +75,15 @@ void	print_philos_full(t_sim *sim)
 
 static void	single_philo(t_sim *sim)
 {
-	struct timeval	now;
-	unsigned long	timestamp;
-	pthread_mutex_t	fork;
 
-	handle_mutex(&fork, INIT);
-	gettimeofday(&now, NULL);
-	sim->start = (now.tv_sec * 1000 + now.tv_usec / 1000);
-	timestamp = get_time_ms(sim);
-	printf(WHI "%ld\t\t%d\t" NC CYA "is thinking\n" NC, timestamp, 1);
-	handle_mutex(&fork, LOCK);
-	printf(WHI "%ld\t\t%d\t" NC
-				YEL "has taken a fork\n" NC, timestamp, 1);
-	usleep(sim->info.time_to_die * 1000);
-	timestamp = get_time_ms(sim);
-	printf(WHI "%ld\t\t%d\t" NC RED "has died\n" NC, timestamp, 1);
-	handle_mutex(&fork, UNLOCK);
-	handle_mutex(&fork, DESTROY);
+	sim->philo = malloc(sizeof(t_philo));
+	if (!sim->philo)
+		return ;
+	sim->philo->sim = sim;
+	if (handle_thread(&sim->philo[0].thread, &single_routine,
+		&sim->philo[0], CREATE) == -1)
+		return ;
+	handle_thread(&sim->philo[0].thread, NULL, NULL, JOIN);
+	free(sim->philo);
 	return ;
 }

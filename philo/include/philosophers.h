@@ -119,8 +119,8 @@ int				handle_thread(pthread_t *thread,
 void			set_bool(pthread_mutex_t *mutex, bool *ptr, bool value);
 bool			get_bool(pthread_mutex_t *mutex, bool *ptr);
 // Thread routines
-void			*main_routine(void *arg);
 void			*philo_routine(void *arg);
+void			*single_routine(void *arg);
 // Time tracking
 unsigned long	get_time_ms(t_sim *sim);
 void			usleep_limit(unsigned long time_ms, t_sim *sim);
