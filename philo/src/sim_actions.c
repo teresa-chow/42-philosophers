@@ -14,7 +14,7 @@
 
 void	act_think(t_philo **philo)
 {
-	if (!sim_active((*philo)->sim) || will_starve(philo, 1))
+	if (!sim_active((*philo)->sim))
 		return ;
 	change_state(philo, THINKING);
 	print_state((*philo)->sim, THINKING, (*philo)->id);
@@ -26,7 +26,7 @@ void	act_eat(t_philo **philo)
 {
 	unsigned long	timestamp;
 
-	if (!sim_active((*philo)->sim) || will_starve(philo, 1))
+	if (!sim_active((*philo)->sim))
 		return ;
 	acquire_forks(philo);
 	change_state(philo, EATING);
@@ -49,7 +49,7 @@ void	act_eat(t_philo **philo)
 
 void	act_sleep(t_philo **philo)
 {
-	if (!sim_active((*philo)->sim) || will_starve(philo, 1))
+	if (!sim_active((*philo)->sim))
 		return ;
 	change_state(philo, SLEEPING);
 	print_state((*philo)->sim, SLEEPING, (*philo)->id);
