@@ -61,6 +61,7 @@ void	print_state(t_sim *sim, enum e_state state, unsigned int id)
 	unsigned long	timestamp;
 
 	handle_mutex(&sim->print, LOCK);
+	usleep(200);
 	timestamp = get_time_ms(sim);
 	if (sim_active(sim))
 	{
