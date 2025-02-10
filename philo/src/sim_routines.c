@@ -18,14 +18,18 @@ void	*philo_routine(void *arg)
 
 	philo = (t_philo *)arg;
 	while (!sim_active(philo->sim))
-		usleep(200);
+		usleep(20);
 	if (philo->id % 2 != 0)
+	{
 		act_think(&philo);
+		usleep_limit(1, philo->sim);
+	}
 	while (sim_active(philo->sim))
 	{
 		act_eat(&philo);	
 		act_sleep(&philo);
 		act_think(&philo);
+		usleep(20);
 	}
 	return (NULL);
 }

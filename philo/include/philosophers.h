@@ -17,6 +17,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <limits.h>
+# include <string.h>
 # include <stdbool.h>
 # include <sys/time.h>
 # include <pthread.h>
@@ -70,11 +71,11 @@ typedef struct s_philo
 {
 	unsigned int	id;
 	pthread_t		thread;
-	pthread_mutex_t	mutex;
+	pthread_mutex_t	state;
+	bool			starved;
 	pthread_mutex_t	counter;
 	bool			full;
 	int				n_meals;
-	enum e_state	state;
 	pthread_mutex_t	*fork1;
 	pthread_mutex_t	*fork2;
 	unsigned long	last_meal;
@@ -131,7 +132,6 @@ void			act_think(t_philo **philo);
 void			act_eat(t_philo **philo);
 void			act_sleep(t_philo **philo);
 // State management
-void			change_state(t_philo **philo, enum e_state state);
 void			print_state(t_sim *sim, enum e_state state, unsigned int id);
 // End simulation
 bool			sim_active(t_sim *sim);

@@ -27,7 +27,7 @@ bool	will_starve(t_philo **philo, unsigned long act_time_ms)
 		remaining = ((*philo)->last_meal + (*philo)->sim->info.time_to_die)
 			- timestamp;
 		usleep_limit(remaining, (*philo)->sim);
-		change_state(philo, STARVED);
+		set_bool(&(*philo)->state, &(*philo)->starved, 1);
 		return (1);
 	}
 	return (0);
@@ -42,15 +42,12 @@ void	starvation_checker(t_sim *sim)
 	{
 		while (i < sim->info.n_philo)
 		{
-			handle_mutex(&sim->philo[i].mutex, LOCK);
-			if (sim->philo[i].state == STARVED)
+			if (get_bool(&sim->philo[i].state, &sim->philo[i].starved) == 1)
 			{
 				print_state(sim, STARVED, sim->philo[i].id);
 				set_bool(&sim->status, &sim->active, 0);
-				handle_mutex(&sim->philo[i].mutex, UNLOCK);
 				return ;
 			}
-			handle_mutex(&sim->philo[i].mutex, UNLOCK);
 			i++;
 		}
 	}
@@ -93,14 +90,14 @@ void	end_sim(t_sim *sim)
 	i = 0;
 	while (i < sim->info.n_philo)
 	{
-		handle_thread(&sim->philo[i].thread, NULL, NULL, DETACH);
+		handle_thread(&sim->philo[i].thread, NULL, NULL, JOIN);
 		i++;
 	}
 	i = 0;
 	while (i < sim->info.n_philo)
 	{
 		handle_mutex(&sim->forks[i], DESTROY);
-		handle_mutex(&sim->philo[i].mutex, DESTROY);
+		handle_mutex(&sim->philo[i].state, DESTROY);
 		handle_mutex(&sim->philo[i].counter, DESTROY);
 		i++;
 	}

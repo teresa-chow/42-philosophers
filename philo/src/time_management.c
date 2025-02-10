@@ -38,9 +38,6 @@ void	usleep_limit(unsigned long time_ms, t_sim *sim)
 		if (remaining > 1)
 			usleep((remaining * 1000) / 2);
 		else
-		{
-			while ((get_time_ms(sim) - act_start) < time_ms)
-				usleep(200);
-		}
+			while ((get_time_ms(sim) - act_start) < time_ms);
 	}
 }

@@ -51,10 +51,11 @@ void	monitor_sim(t_sim *sim)
 {
 	while (sim_active(sim))
 	{
-		philos_full_checker(sim);
+		starvation_checker(sim);
 		if (!sim_active(sim))
 			break ;
-		starvation_checker(sim);
+		philos_full_checker(sim);
+		usleep(500);
 	}
 	return ;
 }
