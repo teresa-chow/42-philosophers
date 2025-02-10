@@ -49,18 +49,12 @@ void	assign_forks(t_sim *sim)
 
 void	monitor_sim(t_sim *sim)
 {
-	unsigned int	i;
-
-	i = 0;
 	while (sim_active(sim))
 	{
 		philos_full_checker(sim);
 		if (!sim_active(sim))
 			break ;
-		starvation_checker(sim, i);
-		i++;
-		if (i == sim->info.n_philo)
-			i = 0;
+		starvation_checker(sim);
 	}
 	return ;
 }

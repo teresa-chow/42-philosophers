@@ -33,17 +33,26 @@ bool	will_starve(t_philo **philo, unsigned long act_time_ms)
 	return (0);
 }
 
-void	starvation_checker(t_sim *sim, unsigned int i)
+void	starvation_checker(t_sim *sim)
 {
+	unsigned int	i;
+
+	i = 0;
 	if (sim_active(sim))
 	{
-		handle_mutex(&sim->philo[i].mutex, LOCK);
-		if (sim->philo[i].state == STARVED)
+		while (i < sim->info.n_philo)
 		{
-			print_state(sim, STARVED, sim->philo[i].id);
-			set_bool(&sim->status, &sim->active, 0);
+			handle_mutex(&sim->philo[i].mutex, LOCK);
+			if (sim->philo[i].state == STARVED)
+			{
+				print_state(sim, STARVED, sim->philo[i].id);
+				set_bool(&sim->status, &sim->active, 0);
+				handle_mutex(&sim->philo[i].mutex, UNLOCK);
+				return ;
+			}
+			handle_mutex(&sim->philo[i].mutex, UNLOCK);
+			i++;
 		}
-		handle_mutex(&sim->philo[i].mutex, UNLOCK);
 	}
 	return ;
 }
@@ -84,9 +93,7 @@ void	end_sim(t_sim *sim)
 	i = 0;
 	while (i < sim->info.n_philo)
 	{
-		//printf("%d is about to join\n", i);
-		handle_thread(&sim->philo[i].thread, NULL, NULL, JOIN);
-		//printf("%d has joined\n", i);
+		handle_thread(&sim->philo[i].thread, NULL, NULL, DETACH);
 		i++;
 	}
 	i = 0;
