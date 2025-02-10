@@ -22,6 +22,11 @@
 # include <sys/time.h>
 # include <pthread.h>
 
+// Min time caps (in milliseconds)
+# define MIN_DIE 60
+# define MIN_EAT 60
+# define MIN_SLEEP 60
+
 // Max thread & time caps (in milliseconds)
 # define MAX_PHILO 200
 # define MAX_DIE 10000 /* 10 sec */
@@ -96,7 +101,7 @@ typedef struct s_sim
 /* ======================= PARSING & ERROR HANDLING ======================== */
 int				check_input(int argc, char **argv, t_info *info);
 // Error messages
-int				err_above_limit(void);
+int				err_limit(void);
 int				err_philo_zero(void);
 int				err_mutexes(t_sim *sim);
 int				err_threads(t_sim *sim);

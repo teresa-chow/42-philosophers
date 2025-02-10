@@ -12,9 +12,9 @@
 
 #include "../include/philosophers.h"
 
-int	err_above_limit(void)
+int	err_limit(void)
 {
-	write(2, "Invalid argument(s): value(s) above limit\n", 42);
+	write(2, "Invalid argument(s): value(s) below or above limit\n", 51);
 	return (0);
 }
 
