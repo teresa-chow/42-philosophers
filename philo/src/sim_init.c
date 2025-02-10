@@ -62,7 +62,7 @@ static int	create_philo(t_sim *sim)
 		init_philo(sim, i);
 		if (handle_thread(&sim->philo[i].thread, &philo_routine,
 				&sim->philo[i], CREATE) == -1)
-				return (-1);
+			return (-1);
 		i++;
 	}
 	return (0);
@@ -81,7 +81,7 @@ static void	init_philo(t_sim *sim, unsigned int i)
 	sim->philo[i].sim = sim;
 }
 
-void run_sim(t_sim *sim)
+void	run_sim(t_sim *sim)
 {
 	struct timeval	now;
 

@@ -70,13 +70,12 @@ void	print_philos_full(t_sim *sim)
 
 static void	single_philo(t_sim *sim)
 {
-
 	sim->philo = malloc(sizeof(t_philo));
 	if (!sim->philo)
 		return ;
 	sim->philo->sim = sim;
 	if (handle_thread(&sim->philo[0].thread, &single_routine,
-		&sim->philo[0], CREATE) == -1)
+			&sim->philo[0], CREATE) == -1)
 		return ;
 	handle_thread(&sim->philo[0].thread, NULL, NULL, JOIN);
 	free(sim->philo);
