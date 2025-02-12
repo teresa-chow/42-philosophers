@@ -24,16 +24,10 @@ void	*philo_routine(void *arg)
 		act_think(&philo);
 	while (sim_active(philo->sim))
 	{
-		if (!sim_active(philo->sim))
-			break ;
 		acquire_forks(&philo);
 		act_eat(&philo);
 		release_forks(&philo);
-		if (!sim_active(philo->sim))
-			break ;
 		act_sleep(&philo);
-		if (!sim_active(philo->sim))
-			break ;
 		act_think(&philo);
 	}
 	return (NULL);
