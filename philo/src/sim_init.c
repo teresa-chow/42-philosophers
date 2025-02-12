@@ -77,7 +77,6 @@ static void	init_philo(t_sim *sim, unsigned int i)
 	handle_mutex(&sim->philo[i].state, INIT);
 	handle_mutex(&sim->philo[i].counter, INIT);
 	assign_forks(sim);
-	sim->philo[i].last_meal = 0;
 	sim->philo[i].sim = sim;
 }
 
