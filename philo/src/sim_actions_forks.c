@@ -27,17 +27,17 @@ void	acquire_forks(t_philo **philo)
 static void	acquire_forks_even(t_philo **philo)
 {
 	handle_mutex((*philo)->fork1, LOCK);
-	print_state((*philo)->sim, FORK, (*philo)->id);
+	print_state(*philo, FORK, (*philo)->id);
 	handle_mutex((*philo)->fork2, LOCK);
-	print_state((*philo)->sim, FORK, (*philo)->id);
+	print_state(*philo, FORK, (*philo)->id);
 }
 
 static void	acquire_forks_odd(t_philo **philo)
 {
 	handle_mutex((*philo)->fork2, LOCK);
-	print_state((*philo)->sim, FORK, (*philo)->id);
+	print_state(*philo, FORK, (*philo)->id);
 	handle_mutex((*philo)->fork1, LOCK);
-	print_state((*philo)->sim, FORK, (*philo)->id);
+	print_state(*philo, FORK, (*philo)->id);
 }
 
 void	release_forks(t_philo **philo)

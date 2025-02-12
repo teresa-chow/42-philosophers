@@ -83,10 +83,7 @@ static void	init_philo(t_sim *sim, unsigned int i)
 
 void	run_sim(t_sim *sim)
 {
-	struct timeval	now;
-
-	gettimeofday(&now, NULL);
-	sim->start = now.tv_sec * 1000 + now.tv_usec / 1000;
+	sim->start = get_time_ms();
 	set_bool(&sim->status, &sim->active, 1);
 	monitor_sim(sim);
 	return ;

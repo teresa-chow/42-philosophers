@@ -12,25 +12,21 @@
 
 #include "../include/philosophers.h"
 
-unsigned long	get_time_ms(t_sim *sim)
+unsigned long	get_time_ms(void)
 {
 	struct timeval	now;
 	unsigned long	timestamp;
 
 	gettimeofday(&now, NULL);
-	timestamp = (now.tv_sec * 1000 + now.tv_usec / 1000) - sim->start;
+	timestamp = (now.tv_sec * 1000 + now.tv_usec / 1000);
 	return (timestamp);
 }
 
-void	usleep_limit(unsigned long time_ms, t_sim *sim)
+void	usleep_limit(unsigned long time_ms)
 {
 	unsigned long	act_start;
 
-	act_start = get_time_ms(sim);
-	while ((get_time_ms(sim) - act_start) < time_ms)
-	{
-		if (!sim_active(sim))
-			break ;
-		usleep(500);
-	}
+	act_start = get_time_ms();
+	while ((get_time_ms() - act_start) < time_ms)
+		usleep(200);
 }

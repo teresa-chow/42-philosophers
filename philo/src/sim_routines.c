@@ -18,12 +18,23 @@ void	*philo_routine(void *arg)
 
 	philo = (t_philo *)arg;
 	while (!sim_active(philo->sim))
-		usleep(20);
+		;
+	philo->start = get_time_ms();
+	if (philo->id % 2 == 0)
+		act_think(&philo);
 	while (sim_active(philo->sim))
 	{
-		act_think(&philo);
+		if (!sim_active(philo->sim))
+			break ;
+		acquire_forks(&philo);
 		act_eat(&philo);
+		release_forks(&philo);
+		if (!sim_active(philo->sim))
+			break ;
 		act_sleep(&philo);
+		if (!sim_active(philo->sim))
+			break ;
+		act_think(&philo);
 	}
 	return (NULL);
 }
@@ -31,18 +42,16 @@ void	*philo_routine(void *arg)
 void	*single_routine(void *arg)
 {
 	t_philo			*philo;
-	struct timeval	now;
 	unsigned long	timestamp;
 
 	philo = (t_philo *)arg;
-	gettimeofday(&now, NULL);
-	philo->sim->start = (now.tv_sec * 1000 + now.tv_usec / 1000);
-	timestamp = get_time_ms(philo->sim);
+	philo->start = get_time_ms();
+	timestamp = get_time_ms() - philo->start;
 	printf(WHI "%ld\t\t%d\t" NC CYA "is thinking\n" NC, timestamp, 1);
 	printf(WHI "%ld\t\t%d\t" NC
 		YEL "has taken a fork\n" NC, timestamp, 1);
 	usleep(philo->sim->info.time_to_die * 1000);
-	timestamp = get_time_ms(philo->sim);
+	timestamp = get_time_ms() - philo->start;
 	printf(WHI "%ld\t\t%d\t" NC RED "has died\n" NC, timestamp, 1);
 	return (NULL);
 }

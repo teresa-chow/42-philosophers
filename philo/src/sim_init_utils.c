@@ -55,7 +55,6 @@ void	monitor_sim(t_sim *sim)
 		if (!sim_active(sim))
 			break ;
 		philos_full_checker(sim);
-		usleep(500);
 	}
 	return ;
 }

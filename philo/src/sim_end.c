@@ -20,13 +20,13 @@ bool	will_starve(t_philo **philo, unsigned long act_time_ms)
 
 	if (!sim_active((*philo)->sim))
 		return (0);
-	timestamp = get_time_ms((*philo)->sim);
+	timestamp = get_time_ms() - ((*philo)->start);
 	finish = timestamp + act_time_ms;
 	if ((finish - (*philo)->last_meal) > ((*philo)->sim->info.time_to_die))
 	{
 		remaining = ((*philo)->last_meal + (*philo)->sim->info.time_to_die)
 			- timestamp;
-		usleep_limit(remaining, (*philo)->sim);
+		usleep_limit(remaining);
 		set_bool(&(*philo)->state, &(*philo)->starved, 1);
 		return (1);
 	}
@@ -44,7 +44,7 @@ void	starvation_checker(t_sim *sim)
 		{
 			if (get_bool(&sim->philo[i].state, &sim->philo[i].starved) == 1)
 			{
-				print_state(sim, STARVED, sim->philo[i].id);
+				print_state(&sim->philo[i], STARVED, sim->philo[i].id);
 				set_bool(&sim->status, &sim->active, 0);
 				return ;
 			}

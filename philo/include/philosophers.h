@@ -83,6 +83,7 @@ typedef struct s_philo
 	int				n_meals;
 	pthread_mutex_t	*fork1;
 	pthread_mutex_t	*fork2;
+	unsigned long	start;
 	unsigned long	last_meal;
 	struct s_sim	*sim;
 }	t_philo;
@@ -128,8 +129,8 @@ bool			get_bool(pthread_mutex_t *mutex, bool *ptr);
 void			*philo_routine(void *arg);
 void			*single_routine(void *arg);
 // Time tracking
-unsigned long	get_time_ms(t_sim *sim);
-void			usleep_limit(unsigned long time_ms, t_sim *sim);
+unsigned long	get_time_ms(void);
+void			usleep_limit(unsigned long time_ms);
 // Actions
 void			acquire_forks(t_philo **philo);
 void			release_forks(t_philo **philo);
@@ -137,7 +138,7 @@ void			act_think(t_philo **philo);
 void			act_eat(t_philo **philo);
 void			act_sleep(t_philo **philo);
 // State management
-void			print_state(t_sim *sim, enum e_state state, unsigned int id);
+void			print_state(t_philo *philo, enum e_state state, unsigned int id);
 // End simulation
 bool			sim_active(t_sim *sim);
 bool			will_starve(t_philo **philo, unsigned long act_time_ms);
