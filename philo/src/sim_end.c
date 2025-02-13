@@ -71,6 +71,7 @@ void	philos_full_checker(t_sim *sim)
 		}
 		if (full == 1)
 		{
+			usleep(50);
 			print_philos_full(sim);
 			set_bool(&sim->status, &sim->active, 0);
 		}

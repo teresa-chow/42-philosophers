@@ -41,12 +41,12 @@ void	*single_routine(void *arg)
 
 	philo = (t_philo *)arg;
 	philo->start = get_time_ms();
-	timestamp = get_time_ms() - philo->start;
+	timestamp = (get_time_ms() - philo->start);
 	printf(WHI "%ld\t\t%d\t" NC CYA "is thinking\n" NC, timestamp, 1);
 	printf(WHI "%ld\t\t%d\t" NC
 		YEL "has taken a fork\n" NC, timestamp, 1);
 	usleep(philo->sim->info.time_to_die * 1000);
-	timestamp = get_time_ms() - philo->start;
+	timestamp = (get_time_ms() - philo->start);
 	printf(WHI "%ld\t\t%d\t" NC RED "has died\n" NC, timestamp, 1);
 	return (NULL);
 }

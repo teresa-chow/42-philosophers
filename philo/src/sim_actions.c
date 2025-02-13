@@ -54,8 +54,8 @@ void	print_state(t_philo *philo, enum e_state state,	unsigned int id)
 {
 	unsigned long	timestamp;
 
-	timestamp = get_time_ms() - philo->start;
 	handle_mutex(&philo->sim->print, LOCK);
+	timestamp = (get_time_ms() - philo->sim->start);
 	if (sim_active(philo->sim))
 	{
 		if (state == THINKING)
@@ -68,7 +68,10 @@ void	print_state(t_philo *philo, enum e_state state,	unsigned int id)
 		else if (state == SLEEPING)
 			printf(WHI "%ld\t\t%d\t" NC BLU "is sleeping\n" NC, timestamp, id);
 		else if (state == STARVED)
+		{
 			printf(WHI "%ld\t\t%d\t" NC RED "has died\n" NC, timestamp, id);
+			usleep(10000);
+		}
 	}
 	handle_mutex(&philo->sim->print, UNLOCK);
 	return ;

@@ -28,7 +28,7 @@
 # define MIN_SLEEP 60
 
 // Max thread & time caps (in milliseconds)
-# define MAX_PHILO 200
+# define MAX_PHILO 1000
 # define MAX_DIE 10000 /* 10 sec */
 # define MAX_EAT 1000 /* 1 sec */
 # define MAX_SLEEP 1000 /* 1 sec */

@@ -38,7 +38,7 @@ BUILD_DIR	= .build
 
 CC	= cc
 CFLAGS	=  -Wall -Wextra -Werror -pthread
-CFLAGS	+=  -fsanitize=thread -g
+#CFLAGS	+=  -fsanitize=thread -g
 #CFLAGS	+= -fsanitize=address
 
 MAKE	= make -C
@@ -91,10 +91,10 @@ norm:	## Execute norminette
 
 ##@ MEMORY MANAGEMENT & THREADING DEBUG
 
-helgrind:	## Run helgrind (export ARG & compile without fsanitize flags)
+helgrind:	## Run helgrind (compile without fsanitize flags)
 	valgrind --tool=helgrind ./$(NAME) 200 400 200 200 5
 
-drd:	## Run drd (export ARG & compile without fsanitize flags)
+drd:	## Run drd (compile without fsanitize flags)
 	valgrind --tool=drd ./$(NAME) 200 400 200 200 5
 
 
