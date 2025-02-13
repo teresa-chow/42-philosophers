@@ -138,7 +138,8 @@ void			act_think(t_philo **philo);
 void			act_eat(t_philo **philo);
 void			act_sleep(t_philo **philo);
 // State management
-void			print_state(t_philo *philo, enum e_state state, unsigned int id);
+void			print_state(t_philo *philo, enum e_state state,
+					unsigned int id);
 // End simulation
 bool			sim_active(t_sim *sim);
 bool			will_starve(t_philo **philo, unsigned long act_time_ms);
