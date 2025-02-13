@@ -69,7 +69,7 @@ void	print_state(t_philo *philo, enum e_state state,	unsigned int id)
 			printf(WHI "%ld\t\t%d\t" NC BLU "is sleeping\n" NC, timestamp, id);
 		else if (state == STARVED)
 		{
-			printf(WHI "%ld\t\t%d\t" NC RED "has died\n" NC, timestamp, id);
+			printf(WHI "%ld\t\t%d\t" NC RED "died\n" NC, timestamp, id);
 			usleep(10000);
 		}
 	}

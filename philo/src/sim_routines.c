@@ -22,7 +22,10 @@ void	*philo_routine(void *arg)
 	philo->start = get_time_ms();
 	philo->last_meal = philo->start;
 	if (philo->id % 2 == 0)
+	{
 		act_think(&philo);
+		usleep(1);
+	}
 	while (sim_active(philo->sim))
 	{
 		acquire_forks(&philo);
