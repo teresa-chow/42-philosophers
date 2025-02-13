@@ -26,7 +26,7 @@ void	act_eat(t_philo **philo)
 
 	if (!sim_active((*philo)->sim))
 		return ;
-	timestamp = get_time_ms() - ((*philo)->start);
+	timestamp = get_time_ms() - ((*philo)->sim->start);
 	print_state(*philo, EATING, (*philo)->id);
 	(*philo)->last_meal = timestamp;
 	if ((*philo)->sim->info.n_times_to_eat != -1)

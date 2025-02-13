@@ -20,9 +20,9 @@ bool	will_starve(t_philo **philo, unsigned long act_time_ms)
 
 	if (!sim_active((*philo)->sim))
 		return (0);
-	timestamp = get_time_ms() - ((*philo)->start);
+	timestamp = get_time_ms() - ((*philo)->sim->start);
 	finish = timestamp + act_time_ms;
-	if ((finish - (*philo)->last_meal) > ((*philo)->sim->info.time_to_die))
+	if ((finish - (*philo)->last_meal) >= ((*philo)->sim->info.time_to_die))
 	{
 		remaining = ((*philo)->last_meal + (*philo)->sim->info.time_to_die)
 			- timestamp;
