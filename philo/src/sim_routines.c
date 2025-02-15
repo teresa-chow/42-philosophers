@@ -19,11 +19,10 @@ void	*philo_routine(void *arg)
 	philo = (t_philo *)arg;
 	while (!sim_active(philo->sim))
 		;
+	set_ulong(&philo->timer, &philo->last_meal,
+		get_time_ms() - philo->sim->start);
 	if (philo->id % 2 == 0)
-	{
 		act_think(&philo);
-		usleep(1);
-	}
 	while (sim_active(philo->sim))
 	{
 		acquire_forks(&philo);

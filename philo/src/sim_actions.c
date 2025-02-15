@@ -17,6 +17,7 @@ void	act_think(t_philo **philo)
 	if (!sim_active((*philo)->sim))
 		return ;
 	print_state(*philo, THINKING, (*philo)->id);
+	usleep(500);
 	return ;
 }
 
