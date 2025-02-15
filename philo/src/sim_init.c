@@ -71,9 +71,11 @@ static int	create_philo(t_sim *sim)
 static void	init_philo(t_sim *sim, unsigned int i)
 {
 	sim->philo[i].id = i + 1;
+	sim->philo[i].last_meal = 0;
 	sim->philo[i].full = 0;
 	sim->philo[i].starved = 0;
 	sim->philo[i].n_meals = 0;
+	handle_mutex(&sim->philo[i].timer, INIT);
 	handle_mutex(&sim->philo[i].state, INIT);
 	handle_mutex(&sim->philo[i].counter, INIT);
 	assign_forks(sim);

@@ -19,8 +19,6 @@ void	*philo_routine(void *arg)
 	philo = (t_philo *)arg;
 	while (!sim_active(philo->sim))
 		;
-	philo->start = get_time_ms();
-	philo->last_meal = philo->start;
 	if (philo->id % 2 == 0)
 	{
 		act_think(&philo);

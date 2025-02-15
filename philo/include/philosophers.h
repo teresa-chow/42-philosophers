@@ -83,7 +83,7 @@ typedef struct s_philo
 	int				n_meals;
 	pthread_mutex_t	*fork1;
 	pthread_mutex_t	*fork2;
-	unsigned long	start;
+	pthread_mutex_t	timer;
 	unsigned long	last_meal;
 	struct s_sim	*sim;
 }	t_philo;
@@ -122,9 +122,12 @@ void			assign_forks(t_sim *sim);
 int				handle_mutex(pthread_mutex_t *mutex, enum e_op op);
 int				handle_thread(pthread_t *thread,
 					void *(*start_routine) (void *), void *arg, enum e_op op);
-// Shared data (mutex protected): bool setters and getters
+// Shared data (mutex protected): setters and getters
 void			set_bool(pthread_mutex_t *mutex, bool *ptr, bool value);
 bool			get_bool(pthread_mutex_t *mutex, bool *ptr);
+void			set_ulong(pthread_mutex_t *mutex, unsigned long *ptr,
+					unsigned long value);
+unsigned long	get_ulong(pthread_mutex_t *mutex, unsigned long *ptr);
 // Thread routines
 void			*philo_routine(void *arg);
 void			*single_routine(void *arg);
@@ -137,15 +140,17 @@ void			release_forks(t_philo **philo);
 void			act_think(t_philo **philo);
 void			act_eat(t_philo **philo);
 void			act_sleep(t_philo **philo);
-// State management
+// State messages
 void			print_state(t_philo *philo, enum e_state state,
 					unsigned int id);
-// End simulation
-bool			sim_active(t_sim *sim);
+void			print_philos_full(t_sim *sim);
+// Monitoring functions
 bool			will_starve(t_philo **philo, unsigned long act_time_ms);
 void			starvation_checker(t_sim *sim);
 void			philos_full_checker(t_sim *sim);
-void			print_philos_full(t_sim *sim);
+void			time_checker(t_sim *sim);
+// End simulation
+bool			sim_active(t_sim *sim);
 void			end_sim(t_sim *sim);
 
 #endif

@@ -28,7 +28,7 @@ void	act_eat(t_philo **philo)
 		return ;
 	timestamp = get_time_ms() - ((*philo)->sim->start);
 	print_state(*philo, EATING, (*philo)->id);
-	(*philo)->last_meal = timestamp;
+	set_ulong(&(*philo)->timer, &(*philo)->last_meal, timestamp);
 	if ((*philo)->sim->info.n_times_to_eat != -1)
 		(*philo)->n_meals++;
 	if (will_starve(philo, (*philo)->sim->info.time_to_eat))

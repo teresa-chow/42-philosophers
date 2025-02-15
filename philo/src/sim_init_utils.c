@@ -47,26 +47,6 @@ void	assign_forks(t_sim *sim)
 	return ;
 }
 
-void	monitor_sim(t_sim *sim)
-{
-	while (sim_active(sim))
-	{
-		starvation_checker(sim);
-		if (!sim_active(sim))
-			break ;
-		philos_full_checker(sim);
-	}
-	return ;
-}
-
-void	print_philos_full(t_sim *sim)
-{
-	handle_mutex(&sim->print, LOCK);
-	printf(GRN "Simulation stopped: "
-		"all philosophers have eaten the minimum amount of times.\n" NC);
-	handle_mutex(&sim->print, UNLOCK);
-}
-
 static void	single_philo(t_sim *sim)
 {
 	sim->philo = malloc(sizeof(t_philo));
