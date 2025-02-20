@@ -9,6 +9,10 @@ ___
 ### Table of contents
 [Subject notes](#subject-notes) · [Usage](#usage) · [License](#license)
 
+</br>
+
+<img src="./philosophers.gif" alt-text="philo program animated gif" width="50%" position="center"></img>
+
 ___
 
 </br>
