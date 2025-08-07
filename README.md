@@ -1,4 +1,4 @@
-# Philosophers
+# Philosophers - Thread Synchronization with Mutexes
 [![42 School: Rank 3](https://img.shields.io/badge/42%20School-Rank%203-%2315bbbb)](https://www.42network.org/)
 
 _This project is based on the dining philosophers problem, a classic concurrency problem in computer science. It presents an opportunity to learn about synchronization issues and how to resolve them._
@@ -53,4 +53,4 @@ This work is published under the terms of [MIT License](./LICENSE).
 
 </br>
 
-[⬆ back to top](#philosophers)
+[⬆ back to top](#philosophers---thread-synchronization-with-mutexes)
