@@ -11,7 +11,7 @@ ___
 
 </br>
 
-<img src="./philosophers.gif" alt-text="philo program animated gif" width="50%" position="center"></img>
+![demo](./philosophers.gif)
 
 ___
 
