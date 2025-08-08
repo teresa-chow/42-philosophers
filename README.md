@@ -7,26 +7,37 @@ ___
 
 
 ### Table of contents
-[Subject notes](#subject-notes) · [Usage](#usage) · [License](#license)
+[Features](#features) · [Usage](#usage) · [License](#license) · [Study notes](#study-notes)
 
 </br>
 
 ![demo](./philosophers.gif)
 
-___
-
 </br>
-
-# Subject notes
-
-Notes on the subject and further reading : [here](https://github.com/teresa-chow/42-philosophers/wiki).
 
 ___
 
+## Features
+
+- Thread creation and management for parallel task execution
+
+- Structured sequencing of operations with precise timing control
+
+- Mutex-based synchronization for controlled access to shared resources
+
+- Configurable runtime parameters through command-line input
+
+- Real-time monitoring of thread states and timing constraints
+
+- Graceful termination of all threads upon meeting stop conditions
+
+- Error handling and memory management
+
+
 </br>
 
-# Usage
-## Setup and compilation
+## Usage
+### Setup and compilation
 
 1. Clone repository
     ```bash
@@ -44,13 +55,19 @@ ___
     ./philo <number_of_philosophers> <time_to_die_ms> <time_to_eat_ms> <time_to_sleep_ms> [number_of_times_each_philosopher_must_eat]
     ```
 
-___
-
 </br>
+
+___
 
 ### License
 This work is published under the terms of [MIT License](./LICENSE).
 
 </br>
+
+#### Study notes
+
+Further reading on the topic: [Wiki](https://github.com/teresa-chow/42-philosophers/wiki)
+
+</br></br>
 
 [⬆ back to top](#philosophers---thread-synchronization-with-mutexes)
